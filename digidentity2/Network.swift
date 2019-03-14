@@ -24,6 +24,7 @@ class Network : NSObject, URLSessionDelegate {
         
         static let certificateName = "certificate"
         static let certificateExt = "crt"
+        static let authorization = "fa018047063f916d370cb0e07ae66b85"
         
         static let item = "item"
         static let items = "items"
@@ -34,8 +35,10 @@ class Network : NSObject, URLSessionDelegate {
     func fetchItems(from startId: String? = nil, to endId: String? = nil) {
         
         let url = Configuration.baseURL.appendingPathComponent(Configuration.items)
+        var request = URLRequest(url: url)
+        request.configure(method: .get, authorization: Configuration.authorization)
         
-        let dataTask = session.dataTask(with: url) { (data, response, error) in
+        let dataTask = session.dataTask(with: request) { (data, response, error) in
             
             print("done")
         }
@@ -76,3 +79,5 @@ class Network : NSObject, URLSessionDelegate {
     }
 
 }
+
+

@@ -23,6 +23,8 @@
 		19C1A818223A635000C6B848 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A816223A635000C6B848 /* URL.swift */; };
 		19C1A81E223A652C00C6B848 /* certificate.crt in Resources */ = {isa = PBXBuildFile; fileRef = 19C1A81D223A652C00C6B848 /* certificate.crt */; };
 		19C1A81F223A652C00C6B848 /* certificate.crt in Resources */ = {isa = PBXBuildFile; fileRef = 19C1A81D223A652C00C6B848 /* certificate.crt */; };
+		19C1A821223A6D0F00C6B848 /* NSURLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A820223A6D0F00C6B848 /* NSURLRequest.swift */; };
+		19C1A822223A6D0F00C6B848 /* NSURLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A820223A6D0F00C6B848 /* NSURLRequest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +53,7 @@
 		19C1A812223A626500C6B848 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		19C1A816223A635000C6B848 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		19C1A81D223A652C00C6B848 /* certificate.crt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = certificate.crt; sourceTree = "<group>"; };
+		19C1A820223A6D0F00C6B848 /* NSURLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSURLRequest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +154,7 @@
 			isa = PBXGroup;
 			children = (
 				19C1A816223A635000C6B848 /* URL.swift */,
+				19C1A820223A6D0F00C6B848 /* NSURLRequest.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -273,6 +277,7 @@
 				19C1A7EE223A5FB700C6B848 /* digidentity2.xcdatamodeld in Sources */,
 				19C1A7E6223A5FB700C6B848 /* AppDelegate.swift in Sources */,
 				19C1A817223A635000C6B848 /* URL.swift in Sources */,
+				19C1A821223A6D0F00C6B848 /* NSURLRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +289,7 @@
 				19C1A810223A61F600C6B848 /* Persistence.swift in Sources */,
 				19C1A7FE223A5FBB00C6B848 /* digidentity2Tests.swift in Sources */,
 				19C1A814223A626500C6B848 /* Network.swift in Sources */,
+				19C1A822223A6D0F00C6B848 /* NSURLRequest.swift in Sources */,
 				19C1A80D223A61A800C6B848 /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
