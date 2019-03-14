@@ -50,32 +50,37 @@ class Network : NSObject, URLSessionDelegate {
     
     func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
 
-        let serverTrust = challenge.protectionSpace.serverTrust
-        let certificate = SecTrustGetCertificateAtIndex(serverTrust!, 0)
+        if let serverTrust = challenge.protectionSpace.serverTrust, let certificate = SecTrustGetCertificateAtIndex(serverTrust, 0) {
+        
+            // FIXME: Remove this when
+            let credential: URLCredential =  URLCredential(trust:serverTrust)
+            completionHandler(.useCredential, credential)
+            return
 
-        // Set SSL polocies for domain name check
-        let policies = NSMutableArray()
-        policies.add(SecPolicyCreateSSL(true, challenge.protectionSpace.host as CFString))
-        SecTrustSetPolicies(serverTrust!, policies)
+            // Set SSL polocies for domain name check
+            let policies = NSMutableArray()
+            policies.add(SecPolicyCreateSSL(true, challenge.protectionSpace.host as CFString))
+            SecTrustSetPolicies(serverTrust, policies)
 
-        // Evaluate server certifiacte
-        var result:SecTrustResultType = SecTrustResultType(rawValue: 0)!
-        SecTrustEvaluate(serverTrust!, &result)
-        let isServerTRusted: Bool = (result == SecTrustResultType.unspecified || result == SecTrustResultType.proceed)
+            // Evaluate server certifiacte
+            if var result: SecTrustResultType = SecTrustResultType(rawValue: 0) {
+                SecTrustEvaluate(serverTrust, &result)
+                let isServerTRusted: Bool = (result == SecTrustResultType.unspecified || result == SecTrustResultType.proceed)
 
-        // Get Local and Remote certificate Data
-        let remoteCertificateData: NSData = SecCertificateCopyData(certificate!)
-        let pathToCertificate = Bundle.main.path(forResource: Configuration.certificateName, ofType: Configuration.certificateExt)
-        let localCertificateData: NSData = NSData(contentsOfFile: pathToCertificate!)!
+                // Get Local and Remote certificate Data
+                let remoteCertificateData: NSData = SecCertificateCopyData(certificate)
+                if let pathToCertificate = Bundle.main.path(forResource: Configuration.certificateName, ofType: Configuration.certificateExt), let localCertificateData: NSData = NSData(contentsOfFile: pathToCertificate) {
 
-        // Compare certificates
-        if isServerTRusted && remoteCertificateData.isEqual(to: localCertificateData as Data) {
-            let credential:URLCredential =  URLCredential(trust:serverTrust!)
-            completionHandler(.useCredential,credential)
+                    // Compare certificates
+                    if isServerTRusted && remoteCertificateData.isEqual(to: localCertificateData as Data) {
+                        let credential: URLCredential =  URLCredential(trust:serverTrust)
+                        completionHandler(.useCredential, credential)
+                    }
+                }
+            }
         }
-        else {
-            completionHandler(.cancelAuthenticationChallenge,nil)
-        }
+        
+        completionHandler(.cancelAuthenticationChallenge, nil)
     }
 
 }
