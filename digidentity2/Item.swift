@@ -12,6 +12,7 @@ import CoreData
 extension Item {
     
     static let entityName = "Item"
+    static let identifier = "identifier"
     
     struct JSON {
         
@@ -21,10 +22,10 @@ extension Item {
         static let img = "img"
     }
     
-    class func find(by identifier: String, in context: NSManagedObjectContext) -> Item? {
+    class func find(by idvalue: String, in context: NSManagedObjectContext) -> Item? {
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        fetchRequest.predicate = NSPredicate(format: "identifier = %@", identifier)
+        fetchRequest.predicate = NSPredicate(format: "%K = %@", identifier, idvalue)
         fetchRequest.fetchLimit = 1
         
         do {

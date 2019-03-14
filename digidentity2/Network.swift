@@ -37,9 +37,16 @@ class Network : NSObject, URLSessionDelegate {
         static let paramMaxId = "max_id"
     }
     
+    struct Errors {
+        
+        static let domain = "API"
+        
+        static let emptyData = -1234
+    }
+    
     // MARK: - Public functions
     
-    func fetchItems(from startId: String? = nil, to endId: String? = nil, completion: ((_ success: Bool, _ error: Error?) -> ())?) {
+    func fetchItems(since startId: String? = nil, before endId: String? = nil, completion: ((_ success: Bool, _ error: Error?) -> ())?) {
         
         var url = Configuration.baseURL.appendingPathComponent(Configuration.items)
         if let _start = startId {
@@ -96,6 +103,9 @@ class Network : NSObject, URLSessionDelegate {
                 catch let error2 {
                     _error = error2
                 }
+            }
+            else if _error == nil {
+                _error = NSError(domain: Errors.domain, code: Errors.emptyData, userInfo: [NSLocalizedDescriptionKey: "Empty data received"])
             }
             
             DispatchQueue.main.async {
