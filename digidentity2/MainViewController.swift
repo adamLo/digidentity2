@@ -13,6 +13,9 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     @IBOutlet weak var itemTableView: UITableView!
     
+    @IBOutlet var activityFooterView: UIView!
+    @IBOutlet weak var footerActivityIndicator: UIActivityIndicatorView!
+    
     private let tableRowHeightRatio: CGFloat = 0.15
     private let tableRowMinHeight: CGFloat = 44.0
     
@@ -23,6 +26,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         super.viewDidLoad()
 
         setupUI()
+        
+        toggleActivityFooter(visible: false)
         
         loadItems()
         Network.shared.fetchItems { (success, error) in
@@ -43,6 +48,32 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         itemTableView.separatorStyle = .none
         itemTableView.tableFooterView = UIView()
+    }
+    
+    private func toggleActivityFooter(visible: Bool) {
+        
+        if visible && itemTableView.tableFooterView != activityFooterView {
+            
+            if !footerActivityIndicator.isAnimating {
+                footerActivityIndicator.startAnimating()
+            }
+            
+            footerActivityIndicator.isHidden = false
+            activityFooterView.isHidden = false
+            
+            itemTableView.tableFooterView = activityFooterView
+        }
+        else if itemTableView.tableFooterView == activityFooterView {
+            
+            if footerActivityIndicator.isAnimating {
+                footerActivityIndicator.stopAnimating()
+            }
+            
+            footerActivityIndicator.isHidden = true
+            activityFooterView.isHidden = true
+            
+            itemTableView.tableFooterView = UIView()
+        }
     }
 
     /*
@@ -87,6 +118,18 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         return max(tableView.bounds.size.height * tableRowHeightRatio, tableRowMinHeight)
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        if let items = itemsFetchedResultsController?.fetchedObjects as? [Item], (items.count == indexPath.row + 1 || items.count == 0) {
+            
+            toggleActivityFooter(visible: true)
+        }
+        else {
+            
+            toggleActivityFooter(visible: false)
+        }
     }
     
     // MARK: - Core Data

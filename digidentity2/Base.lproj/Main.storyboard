@@ -37,6 +37,31 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="AgJ-NZ-JEz">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <view key="tableFooterView" contentMode="scaleToFill" id="fJA-EW-pf3">
+                                    <rect key="frame" x="0.0" y="128" width="375" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="R42-XC-5xW">
+                                            <rect key="frame" x="8" y="12" width="20" height="20"/>
+                                        </activityIndicatorView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fetching past items" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f42-lQ-oN1">
+                                            <rect key="frame" x="33" y="12" width="150.5" height="20.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstItem="R42-XC-5xW" firstAttribute="centerY" secondItem="fJA-EW-pf3" secondAttribute="centerY" id="Wyh-hk-nEa"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="f42-lQ-oN1" secondAttribute="trailing" constant="8" id="XaA-rR-W4O"/>
+                                        <constraint firstItem="f42-lQ-oN1" firstAttribute="leading" secondItem="R42-XC-5xW" secondAttribute="trailing" constant="5" id="mP8-CJ-1tI"/>
+                                        <constraint firstItem="R42-XC-5xW" firstAttribute="leading" secondItem="fJA-EW-pf3" secondAttribute="leading" constant="8" id="oyd-Iv-8PF"/>
+                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="f42-lQ-oN1" secondAttribute="bottom" constant="5" id="tnB-UQ-NkN"/>
+                                        <constraint firstItem="f42-lQ-oN1" firstAttribute="top" relation="greaterThanOrEqual" secondItem="fJA-EW-pf3" secondAttribute="top" constant="5" id="u7i-gp-TwW"/>
+                                        <constraint firstItem="f42-lQ-oN1" firstAttribute="centerY" secondItem="fJA-EW-pf3" secondAttribute="centerY" id="wmh-Or-Mzo"/>
+                                    </constraints>
+                                </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="itemCell" rowHeight="100" id="N7K-81-kwW" customClass="ItemCell" customModule="digidentity2" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="100"/>
@@ -133,6 +158,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="4ll-Ws-B4T"/>
                     <connections>
+                        <outlet property="activityFooterView" destination="fJA-EW-pf3" id="3QD-FW-pgM"/>
+                        <outlet property="footerActivityIndicator" destination="R42-XC-5xW" id="9OJ-Qr-jjg"/>
                         <outlet property="itemTableView" destination="AgJ-NZ-JEz" id="Fwh-5M-cDW"/>
                     </connections>
                 </viewController>
