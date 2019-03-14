@@ -19,6 +19,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     private let tableRowHeightRatio: CGFloat = 0.15
     private let tableRowMinHeight: CGFloat = 44.0
     
+    private var isFetchingData = false
+    
     // MARK: - Controller Lifecycle
     
     override func viewDidLoad() {
@@ -30,8 +32,17 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         toggleActivityFooter(visible: false)
         
         loadItems()
-        Network.shared.fetchItems { (success, error) in
-            print("Success: \(success), error: \(error)")
+        
+        isFetchingData = true
+        Network.shared.fetchItems {[weak self] (_, error) in
+            
+            guard let _self = self else {return}
+            
+            _self.isFetchingData = false
+            
+            if let _error = error {
+                _self.show(error: _error)
+            }
         }
     }
     
@@ -48,6 +59,12 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         itemTableView.separatorStyle = .none
         itemTableView.tableFooterView = UIView()
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.attributedTitle = NSAttributedString(string: NSLocalizedString("Fetching items", comment: "HUD title when fetching items"), attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12.0)])
+        refreshControl.tintColor = UIColor.darkGray
+        refreshControl.addTarget(self, action: #selector(refreshInitiated(_:)), for: .valueChanged)
+        itemTableView.refreshControl = refreshControl
     }
     
     private func toggleActivityFooter(visible: Bool) {
@@ -74,6 +91,13 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
             itemTableView.tableFooterView = UIView()
         }
+    }
+    
+    private func show(error: Error) {
+        
+        let alert = UIAlertController(title: NSLocalizedString("Error fetching items", comment: "Items fetch failure dialog title"), message: error.localizedDescription, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "OK Button title"), style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
 
     /*
@@ -122,9 +146,25 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        if let items = itemsFetchedResultsController?.fetchedObjects as? [Item], (items.count == indexPath.row + 1 || items.count == 0) {
+        if !isFetchingData, let items = itemsFetchedResultsController?.fetchedObjects as? [Item], !items.isEmpty, items.count == indexPath.row + 1 {
             
-            toggleActivityFooter(visible: true)
+            if let itemId = items[indexPath.row].identifier {
+                
+                toggleActivityFooter(visible: true)
+                isFetchingData = true
+                
+                Network.shared.fetchItems(before: itemId) {[weak self] (_, error) in
+                    
+                    guard let _self = self else {return}
+                    
+                    _self.toggleActivityFooter(visible: false)
+                    _self.isFetchingData = false
+                    
+                    if let _error = error {
+                        _self.show(error: _error)
+                    }
+                }
+            }
         }
         else {
             
@@ -149,7 +189,6 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         do {
         
             try controller.performFetch()
-            itemTableView.reloadData()
         }
         catch let error {
             
@@ -158,55 +197,84 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    private var didBeginChanges = false
+    private var changesStarted = 0
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+
+        changesStarted += 1
         
-        if !didBeginChanges {
-            didBeginChanges = true
+        if changesStarted == 1 {
             itemTableView.beginUpdates()
         }
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         
-        DispatchQueue.main.async {
-            
-            if self.itemTableView != nil {
+            switch type {
                 
-                switch type {
-                    
-                case .insert:
-                    if let _indexPath = newIndexPath {
-                        self.itemTableView.insertRows(at: [_indexPath], with: .top)
-                    }
-                    
-                case .delete:
-                    if let _indexPath = indexPath {
-                        self.itemTableView.deleteRows(at: [_indexPath], with: .none)
-                    }
-                    
-                case .update:
-                    if let _indexPath = indexPath {
-                        self.itemTableView.reloadRows(at: [_indexPath], with: .none)
-                    }
-                    
-                case .move:
-                    if let _indexPath = indexPath {
-                        self.itemTableView.deleteRows(at: [_indexPath], with: .none)
-                    }
-                    if let _indexPath = newIndexPath {
-                        self.itemTableView.insertRows(at: [_indexPath], with: .none)
-                    }
+            case .insert:
+                if let _indexPath = newIndexPath {
+                    self.itemTableView.insertRows(at: [_indexPath], with: .top)
+                }
+                
+            case .delete:
+                if let _indexPath = indexPath {
+                    self.itemTableView.deleteRows(at: [_indexPath], with: .none)
+                }
+                
+            case .update:
+                if let _indexPath = indexPath {
+                    self.itemTableView.reloadRows(at: [_indexPath], with: .none)
+                }
+                
+            case .move:
+                if let _indexPath = indexPath {
+                    self.itemTableView.deleteRows(at: [_indexPath], with: .none)
+                }
+                if let _indexPath = newIndexPath {
+                    self.itemTableView.insertRows(at: [_indexPath], with: .none)
                 }
             }
-        }
+
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         
-        itemTableView.endUpdates()
-        didBeginChanges = false
+        changesStarted = max(changesStarted - 1, 0)
+        
+        if changesStarted == 0 {
+            itemTableView.endUpdates()
+        }
+    }
+    
+    // MARK: - Actions
+    
+    @objc func refreshInitiated(_ sender: Any) {
+        
+        if !isFetchingData {
+
+            var sinceId: String?
+            if let firstItem = itemsFetchedResultsController?.fetchedObjects?.first as? Item, let itemId = firstItem.identifier {
+                sinceId = itemId
+            }
+            
+            isFetchingData = true
+            
+            Network.shared.fetchItems(since: sinceId) {[weak self] (_, error) in
+                
+                guard let _self = self else {return}
+                
+                _self.isFetchingData = false
+                
+                if let _error = error {
+                    _self.show(error: _error)
+                }
+                
+                if let refreshControl = _self.itemTableView.refreshControl, refreshControl.isRefreshing {
+                    refreshControl.endRefreshing()
+                }
+            }
+        }
     }
     
 }
