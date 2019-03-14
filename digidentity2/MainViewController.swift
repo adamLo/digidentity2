@@ -9,12 +9,12 @@
 import UIKit
 import CoreData
 
-class MainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
+class MainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, UIScrollViewDelegate {
 
     @IBOutlet weak var itemTableView: UITableView!
     
-    @IBOutlet var activityFooterView: UIView!
-    @IBOutlet weak var footerActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet var activityView: UIView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     private let tableRowHeightRatio: CGFloat = 0.15
     private let tableRowMinHeight: CGFloat = 44.0
@@ -29,7 +29,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         setupUI()
         
-        toggleActivityFooter(visible: false)
+        toggleActivity(visible: false, footer: false)
         
         loadItems()
         
@@ -67,29 +67,40 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         itemTableView.refreshControl = refreshControl
     }
     
-    private func toggleActivityFooter(visible: Bool) {
+    private func toggleActivity(visible: Bool, footer: Bool) {
         
-        if visible && itemTableView.tableFooterView != activityFooterView {
+        if visible && itemTableView.tableFooterView != activityView && itemTableView.tableHeaderView != activityView {
             
-            if !footerActivityIndicator.isAnimating {
-                footerActivityIndicator.startAnimating()
+            if !activityIndicator.isAnimating {
+                activityIndicator.startAnimating()
             }
             
-            footerActivityIndicator.isHidden = false
-            activityFooterView.isHidden = false
+            activityIndicator.isHidden = false
+            activityView.isHidden = false
             
-            itemTableView.tableFooterView = activityFooterView
+            if footer {
+                itemTableView.tableFooterView?.removeFromSuperview()
+                itemTableView.tableFooterView = activityView
+            }
+            else {
+                itemTableView.tableHeaderView?.removeFromSuperview()
+                itemTableView.tableHeaderView = activityView
+            }
         }
-        else if itemTableView.tableFooterView == activityFooterView {
+        else if !visible && (itemTableView.tableFooterView == activityView || itemTableView.tableHeaderView == activityView) {
             
-            if footerActivityIndicator.isAnimating {
-                footerActivityIndicator.stopAnimating()
+            if activityIndicator.isAnimating {
+                activityIndicator.stopAnimating()
             }
             
-            footerActivityIndicator.isHidden = true
-            activityFooterView.isHidden = true
+            activityIndicator.isHidden = true
+            activityView.isHidden = true
             
+            itemTableView.tableFooterView?.removeFromSuperview()
             itemTableView.tableFooterView = UIView()
+            
+            itemTableView.tableHeaderView?.removeFromSuperview()
+            itemTableView.tableHeaderView = nil
         }
     }
     
@@ -146,19 +157,32 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        if !isFetchingData, let items = itemsFetchedResultsController?.fetchedObjects as? [Item], !items.isEmpty, items.count == indexPath.row + 1 {
+        if !isFetchingData, let items = itemsFetchedResultsController?.fetchedObjects as? [Item], !items.isEmpty {
             
-            if let itemId = items[indexPath.row].identifier {
+            var sinceId: String?
+            var beforeId: String?
+            
+            if indexPath.row == 0 && didUserScrollSinceFetch, let _sinceId = items[0].identifier {
                 
-                toggleActivityFooter(visible: true)
+                sinceId = _sinceId
+            }
+            else if items.count == indexPath.row + 1, let _beforeId = items[indexPath.row].identifier {
+                
+                beforeId = _beforeId
+            }
+            
+            if beforeId != nil || sinceId != nil {
+                
+                toggleActivity(visible: true, footer: beforeId != nil)
                 isFetchingData = true
                 
-                Network.shared.fetchItems(before: itemId) {[weak self] (_, error) in
+                Network.shared.fetchItems(since: sinceId, before: beforeId) {[weak self] (_, error) in
                     
                     guard let _self = self else {return}
                     
-                    _self.toggleActivityFooter(visible: false)
+                    _self.toggleActivity(visible: false, footer: false)
                     _self.isFetchingData = false
+                    _self.didUserScrollSinceFetch = false
                     
                     if let _error = error {
                         _self.show(error: _error)
@@ -168,7 +192,18 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
         else {
             
-            toggleActivityFooter(visible: false)
+            toggleActivity(visible: false, footer: false)
+        }
+    }
+    
+    // MARK: - ScrollView
+    
+    private var didUserScrollSinceFetch = false
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        if !isFetchingData && !didUserScrollSinceFetch {
+            didUserScrollSinceFetch = true
         }
     }
     

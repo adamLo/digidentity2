@@ -158,8 +158,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="4ll-Ws-B4T"/>
                     <connections>
-                        <outlet property="activityFooterView" destination="fJA-EW-pf3" id="3QD-FW-pgM"/>
-                        <outlet property="footerActivityIndicator" destination="R42-XC-5xW" id="9OJ-Qr-jjg"/>
+                        <outlet property="activityIndicator" destination="R42-XC-5xW" id="9OJ-Qr-jjg"/>
+                        <outlet property="activityView" destination="fJA-EW-pf3" id="3QD-FW-pgM"/>
                         <outlet property="itemTableView" destination="AgJ-NZ-JEz" id="Fwh-5M-cDW"/>
                     </connections>
                 </viewController>
