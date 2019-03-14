@@ -25,6 +25,12 @@
 		19C1A81F223A652C00C6B848 /* certificate.crt in Resources */ = {isa = PBXBuildFile; fileRef = 19C1A81D223A652C00C6B848 /* certificate.crt */; };
 		19C1A821223A6D0F00C6B848 /* NSURLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A820223A6D0F00C6B848 /* NSURLRequest.swift */; };
 		19C1A822223A6D0F00C6B848 /* NSURLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A820223A6D0F00C6B848 /* NSURLRequest.swift */; };
+		19C1A826223A814800C6B848 /* Item+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A824223A814800C6B848 /* Item+CoreDataClass.swift */; };
+		19C1A827223A814800C6B848 /* Item+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A824223A814800C6B848 /* Item+CoreDataClass.swift */; };
+		19C1A828223A814800C6B848 /* Item+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A825223A814800C6B848 /* Item+CoreDataProperties.swift */; };
+		19C1A829223A814800C6B848 /* Item+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A825223A814800C6B848 /* Item+CoreDataProperties.swift */; };
+		19C1A82C223A817400C6B848 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A82B223A817400C6B848 /* Item.swift */; };
+		19C1A82D223A817400C6B848 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A82B223A817400C6B848 /* Item.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +60,9 @@
 		19C1A816223A635000C6B848 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		19C1A81D223A652C00C6B848 /* certificate.crt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = certificate.crt; sourceTree = "<group>"; };
 		19C1A820223A6D0F00C6B848 /* NSURLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSURLRequest.swift; sourceTree = "<group>"; };
+		19C1A824223A814800C6B848 /* Item+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataClass.swift"; sourceTree = "<group>"; };
+		19C1A825223A814800C6B848 /* Item+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		19C1A82B223A817400C6B848 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +126,8 @@
 		19C1A808223A612400C6B848 /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
+				19C1A82A223A815500C6B848 /* Extensions */,
+				19C1A823223A812D00C6B848 /* Generated */,
 				19C1A7EC223A5FB700C6B848 /* digidentity2.xcdatamodeld */,
 				19C1A80E223A61F600C6B848 /* Persistence.swift */,
 			);
@@ -166,6 +177,23 @@
 				19C1A7EF223A5FBB00C6B848 /* Assets.xcassets */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		19C1A823223A812D00C6B848 /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				19C1A824223A814800C6B848 /* Item+CoreDataClass.swift */,
+				19C1A825223A814800C6B848 /* Item+CoreDataProperties.swift */,
+			);
+			name = Generated;
+			sourceTree = "<group>";
+		};
+		19C1A82A223A815500C6B848 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				19C1A82B223A817400C6B848 /* Item.swift */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -271,12 +299,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19C1A82C223A817400C6B848 /* Item.swift in Sources */,
 				19C1A813223A626500C6B848 /* Network.swift in Sources */,
 				19C1A80C223A61A800C6B848 /* MainViewController.swift in Sources */,
 				19C1A80F223A61F600C6B848 /* Persistence.swift in Sources */,
 				19C1A7EE223A5FB700C6B848 /* digidentity2.xcdatamodeld in Sources */,
 				19C1A7E6223A5FB700C6B848 /* AppDelegate.swift in Sources */,
 				19C1A817223A635000C6B848 /* URL.swift in Sources */,
+				19C1A828223A814800C6B848 /* Item+CoreDataProperties.swift in Sources */,
+				19C1A826223A814800C6B848 /* Item+CoreDataClass.swift in Sources */,
 				19C1A821223A6D0F00C6B848 /* NSURLRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -286,11 +317,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				19C1A818223A635000C6B848 /* URL.swift in Sources */,
+				19C1A82D223A817400C6B848 /* Item.swift in Sources */,
 				19C1A810223A61F600C6B848 /* Persistence.swift in Sources */,
+				19C1A829223A814800C6B848 /* Item+CoreDataProperties.swift in Sources */,
 				19C1A7FE223A5FBB00C6B848 /* digidentity2Tests.swift in Sources */,
 				19C1A814223A626500C6B848 /* Network.swift in Sources */,
 				19C1A822223A6D0F00C6B848 /* NSURLRequest.swift in Sources */,
 				19C1A80D223A61A800C6B848 /* MainViewController.swift in Sources */,
+				19C1A827223A814800C6B848 /* Item+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

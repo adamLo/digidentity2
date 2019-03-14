@@ -13,7 +13,9 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        Network.shared.fetchItems()
+        Network.shared.fetchItems { (success, error) in
+            print("Success: \(success), error: \(error)")
+        }
     }
     
 

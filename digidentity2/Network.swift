@@ -8,6 +8,9 @@
 
 import Foundation
 
+typealias JSONObject = [String: Any]
+typealias JSONArray = [JSONObject]
+
 class Network : NSObject, URLSessionDelegate {
     
     static let shared = Network()
@@ -32,7 +35,7 @@ class Network : NSObject, URLSessionDelegate {
     
     // MARK: - Public functions
     
-    func fetchItems(from startId: String? = nil, to endId: String? = nil) {
+    func fetchItems(from startId: String? = nil, to endId: String? = nil, completion: ((_ success: Bool, _ error: Error?) -> ())?) {
         
         let url = Configuration.baseURL.appendingPathComponent(Configuration.items)
         var request = URLRequest(url: url)
@@ -40,29 +43,48 @@ class Network : NSObject, URLSessionDelegate {
         
         let dataTask = session.dataTask(with: request) { (data, response, error) in
             
-            print("done")
+            var success = false
+            var _error: Error? = error
             
             if let _data = data, !_data.isEmpty {
                 
                 do {
-                    
-                    if let jsonObject = try JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any] {
+                    if let jsonArray = try JSONSerialization.jsonObject(with: _data, options: []) as? JSONArray {
                         
-                        print("json: \(jsonObject)")
+                        if !jsonArray.isEmpty {
+                        
+                            let context = Persistence.shared.createNewManagedObjectContext()
+                            context.performAndWait {
+                                
+                                for jsonObject in jsonArray {
+                                    
+                                    if let identifier = jsonObject[Item.JSON.id] as? String, !identifier.isEmpty {
+
+                                        var item: Item!
+                                        if let _item = Item.find(by: identifier, in: context) {
+                                            item = _item
+                                        }
+                                        else {
+                                            item = Item.new(in: context)
+                                        }
+                                        item.update(with: jsonObject)
+                                    }
+                                }
+                            }
+                            
+                            try context.save()
+                        }
+                        
+                        success = true
                     }
-                    else if let jsonArray = try JSONSerialization.jsonObject(with: data!, options: []) as? [[String: Any]] {
-                        print("jsonarray: \(jsonArray)")
-                    }
-                    
                 }
                 catch let error2 {
-
-                    // FIXME: return error2
+                    _error = error2
                 }
             }
-            else {
-                
-                // FIXME: return error
+            
+            DispatchQueue.main.async {
+                completion?(success, _error)
             }
         }
         
