@@ -41,6 +41,29 @@ class Network : NSObject, URLSessionDelegate {
         let dataTask = session.dataTask(with: request) { (data, response, error) in
             
             print("done")
+            
+            if let _data = data, !_data.isEmpty {
+                
+                do {
+                    
+                    if let jsonObject = try JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any] {
+                        
+                        print("json: \(jsonObject)")
+                    }
+                    else if let jsonArray = try JSONSerialization.jsonObject(with: data!, options: []) as? [[String: Any]] {
+                        print("jsonarray: \(jsonArray)")
+                    }
+                    
+                }
+                catch let error2 {
+
+                    // FIXME: return error2
+                }
+            }
+            else {
+                
+                // FIXME: return error
+            }
         }
         
         dataTask.resume()
