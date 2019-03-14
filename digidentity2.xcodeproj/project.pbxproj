@@ -8,12 +8,21 @@
 
 /* Begin PBXBuildFile section */
 		19C1A7E6223A5FB700C6B848 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A7E5223A5FB700C6B848 /* AppDelegate.swift */; };
-		19C1A7E8223A5FB700C6B848 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A7E7223A5FB700C6B848 /* ViewController.swift */; };
 		19C1A7EB223A5FB700C6B848 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 19C1A7E9223A5FB700C6B848 /* Main.storyboard */; };
 		19C1A7EE223A5FB700C6B848 /* digidentity2.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A7EC223A5FB700C6B848 /* digidentity2.xcdatamodeld */; };
 		19C1A7F0223A5FBB00C6B848 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19C1A7EF223A5FBB00C6B848 /* Assets.xcassets */; };
 		19C1A7F3223A5FBB00C6B848 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 19C1A7F1223A5FBB00C6B848 /* LaunchScreen.storyboard */; };
 		19C1A7FE223A5FBB00C6B848 /* digidentity2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A7FD223A5FBB00C6B848 /* digidentity2Tests.swift */; };
+		19C1A80C223A61A800C6B848 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A80B223A61A800C6B848 /* MainViewController.swift */; };
+		19C1A80D223A61A800C6B848 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A80B223A61A800C6B848 /* MainViewController.swift */; };
+		19C1A80F223A61F600C6B848 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A80E223A61F600C6B848 /* Persistence.swift */; };
+		19C1A810223A61F600C6B848 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A80E223A61F600C6B848 /* Persistence.swift */; };
+		19C1A813223A626500C6B848 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A812223A626500C6B848 /* Network.swift */; };
+		19C1A814223A626500C6B848 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A812223A626500C6B848 /* Network.swift */; };
+		19C1A817223A635000C6B848 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A816223A635000C6B848 /* URL.swift */; };
+		19C1A818223A635000C6B848 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A816223A635000C6B848 /* URL.swift */; };
+		19C1A81E223A652C00C6B848 /* certificate.crt in Resources */ = {isa = PBXBuildFile; fileRef = 19C1A81D223A652C00C6B848 /* certificate.crt */; };
+		19C1A81F223A652C00C6B848 /* certificate.crt in Resources */ = {isa = PBXBuildFile; fileRef = 19C1A81D223A652C00C6B848 /* certificate.crt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,7 +38,6 @@
 /* Begin PBXFileReference section */
 		19C1A7E2223A5FB700C6B848 /* digidentity2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = digidentity2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		19C1A7E5223A5FB700C6B848 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		19C1A7E7223A5FB700C6B848 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		19C1A7EA223A5FB700C6B848 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		19C1A7ED223A5FB700C6B848 /* digidentity2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = digidentity2.xcdatamodel; sourceTree = "<group>"; };
 		19C1A7EF223A5FBB00C6B848 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -38,6 +46,11 @@
 		19C1A7F9223A5FBB00C6B848 /* digidentity2Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = digidentity2Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		19C1A7FD223A5FBB00C6B848 /* digidentity2Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = digidentity2Tests.swift; sourceTree = "<group>"; };
 		19C1A7FF223A5FBB00C6B848 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		19C1A80B223A61A800C6B848 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		19C1A80E223A61F600C6B848 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		19C1A812223A626500C6B848 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
+		19C1A816223A635000C6B848 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
+		19C1A81D223A652C00C6B848 /* certificate.crt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = certificate.crt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,13 +92,12 @@
 		19C1A7E4223A5FB700C6B848 /* digidentity2 */ = {
 			isa = PBXGroup;
 			children = (
-				19C1A7E5223A5FB700C6B848 /* AppDelegate.swift */,
-				19C1A7E7223A5FB700C6B848 /* ViewController.swift */,
-				19C1A7E9223A5FB700C6B848 /* Main.storyboard */,
-				19C1A7EF223A5FBB00C6B848 /* Assets.xcassets */,
-				19C1A7F1223A5FBB00C6B848 /* LaunchScreen.storyboard */,
-				19C1A7F4223A5FBB00C6B848 /* Info.plist */,
-				19C1A7EC223A5FB700C6B848 /* digidentity2.xcdatamodeld */,
+				19C1A81C223A64FF00C6B848 /* Resources */,
+				19C1A815223A634200C6B848 /* Extensions */,
+				19C1A811223A624A00C6B848 /* Network */,
+				19C1A80A223A614000C6B848 /* Application */,
+				19C1A809223A613200C6B848 /* UI */,
+				19C1A808223A612400C6B848 /* Core Data */,
 			);
 			path = digidentity2;
 			sourceTree = "<group>";
@@ -97,6 +109,59 @@
 				19C1A7FF223A5FBB00C6B848 /* Info.plist */,
 			);
 			path = digidentity2Tests;
+			sourceTree = "<group>";
+		};
+		19C1A808223A612400C6B848 /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				19C1A7EC223A5FB700C6B848 /* digidentity2.xcdatamodeld */,
+				19C1A80E223A61F600C6B848 /* Persistence.swift */,
+			);
+			name = "Core Data";
+			sourceTree = "<group>";
+		};
+		19C1A809223A613200C6B848 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				19C1A7F1223A5FBB00C6B848 /* LaunchScreen.storyboard */,
+				19C1A7E9223A5FB700C6B848 /* Main.storyboard */,
+				19C1A80B223A61A800C6B848 /* MainViewController.swift */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		19C1A80A223A614000C6B848 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				19C1A7E5223A5FB700C6B848 /* AppDelegate.swift */,
+				19C1A7F4223A5FBB00C6B848 /* Info.plist */,
+			);
+			name = Application;
+			sourceTree = "<group>";
+		};
+		19C1A811223A624A00C6B848 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				19C1A812223A626500C6B848 /* Network.swift */,
+			);
+			name = Network;
+			sourceTree = "<group>";
+		};
+		19C1A815223A634200C6B848 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				19C1A816223A635000C6B848 /* URL.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
+		19C1A81C223A64FF00C6B848 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				19C1A81D223A652C00C6B848 /* certificate.crt */,
+				19C1A7EF223A5FBB00C6B848 /* Assets.xcassets */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -181,6 +246,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				19C1A7F3223A5FBB00C6B848 /* LaunchScreen.storyboard in Resources */,
+				19C1A81E223A652C00C6B848 /* certificate.crt in Resources */,
 				19C1A7F0223A5FBB00C6B848 /* Assets.xcassets in Resources */,
 				19C1A7EB223A5FB700C6B848 /* Main.storyboard in Resources */,
 			);
@@ -190,6 +256,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19C1A81F223A652C00C6B848 /* certificate.crt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,9 +267,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19C1A813223A626500C6B848 /* Network.swift in Sources */,
+				19C1A80C223A61A800C6B848 /* MainViewController.swift in Sources */,
+				19C1A80F223A61F600C6B848 /* Persistence.swift in Sources */,
 				19C1A7EE223A5FB700C6B848 /* digidentity2.xcdatamodeld in Sources */,
-				19C1A7E8223A5FB700C6B848 /* ViewController.swift in Sources */,
 				19C1A7E6223A5FB700C6B848 /* AppDelegate.swift in Sources */,
+				19C1A817223A635000C6B848 /* URL.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,7 +280,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19C1A818223A635000C6B848 /* URL.swift in Sources */,
+				19C1A810223A61F600C6B848 /* Persistence.swift in Sources */,
 				19C1A7FE223A5FBB00C6B848 /* digidentity2Tests.swift in Sources */,
+				19C1A814223A626500C6B848 /* Network.swift in Sources */,
+				19C1A80D223A61A800C6B848 /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
