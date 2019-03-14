@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 typealias JSONObject = [String: Any]
 typealias JSONArray = [JSONObject]
@@ -31,17 +32,31 @@ class Network : NSObject, URLSessionDelegate {
         
         static let item = "item"
         static let items = "items"
+        
+        static let paramSinceId = "since_id"
+        static let paramMaxId = "max_id"
     }
     
     // MARK: - Public functions
     
     func fetchItems(from startId: String? = nil, to endId: String? = nil, completion: ((_ success: Bool, _ error: Error?) -> ())?) {
         
-        let url = Configuration.baseURL.appendingPathComponent(Configuration.items)
+        var url = Configuration.baseURL.appendingPathComponent(Configuration.items)
+        if let _start = startId {
+            url = url.appendQueryItem(with: Configuration.paramSinceId, value: _start)
+        }
+        if let _end = endId {
+            url = url.appendQueryItem(with: Configuration.paramMaxId, value: _end)
+        }
+        
         var request = URLRequest(url: url)
         request.configure(method: .get, authorization: Configuration.authorization)
         
         let dataTask = session.dataTask(with: request) { (data, response, error) in
+            
+            DispatchQueue.main.async {
+                (UIApplication.shared.delegate as! AppDelegate).showNetworkActivityIndicator()
+            }
             
             var success = false
             var _error: Error? = error
@@ -84,6 +99,7 @@ class Network : NSObject, URLSessionDelegate {
             }
             
             DispatchQueue.main.async {
+                (UIApplication.shared.delegate as! AppDelegate).hideNetworkActivityIndicator()
                 completion?(success, _error)
             }
         }
