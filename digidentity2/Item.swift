@@ -52,7 +52,9 @@ extension Item {
         return item
     }
     
-    func update(with json: JSONObject) {
+    func update(with json: JSONObject, encrypt: Bool) {
+        
+        encrypted = false
         
         if let _id = json[JSON.id] as? String {
             identifier = _id
@@ -60,6 +62,10 @@ extension Item {
         
         if let _text = json[JSON.text] as? String {
             text = _text
+            if encrypt && Encryption.shared.isSetup, let encryptedText = Encryption.shared.encrypt(toBase64: _text) {
+                encrypted = true
+                text = encryptedText
+            }
         }
         
         if let _confidence = json[JSON.confidence] as? Double {
@@ -68,6 +74,10 @@ extension Item {
         
         if let _img = json[JSON.img] as? String, !_img.isEmpty, let data = NSData(base64Encoded: _img, options: .ignoreUnknownCharacters) {
             imageData = data
+            if encrypt && Encryption.shared.isSetup, let encryptedData = Encryption.shared.encrypt(data: data) {
+                encrypted = true
+                imageData = encryptedData as NSData
+            }
         }
     }
 }

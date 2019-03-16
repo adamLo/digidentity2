@@ -30,6 +30,10 @@ class Encryption {
         return nil
     }()
     
+    var isSetup: Bool {        
+        return cypher != nil
+    }
+    
     func encrypt(toBase64 plainText: String) -> String? {
         
         if let _cypher = cypher {
@@ -47,7 +51,24 @@ class Encryption {
         return nil
     }
     
-    func decrypt(base64Encoded encrypted: String) -> String? {
+    func encrypt(data plainData: NSData) -> Data? {
+        
+        if let _cypher = cypher {
+            
+            do {
+                let array = [UInt8](plainData as Data)
+                let encrypted = try _cypher.encrypt(array)
+                return Data(bytes: encrypted)
+            }
+            catch let error {
+                print("Error encoding text: \(error)")
+            }
+        }
+        
+        return nil
+    }
+    
+    func decrypt(base64String encrypted: String) -> String? {
         
         if let _cypher = cypher {
             
@@ -58,6 +79,34 @@ class Encryption {
                 if let decryptedText = String(bytes: decrypted, encoding: .utf8) {
                     return decryptedText
                 }
+            }
+            catch let error {
+                print("Error encoding text: \(error)")
+            }
+        }
+        
+        return nil
+    }
+    
+    func decrypt(Data encrypted: NSData) -> Data? {
+        
+        if let _cypher = cypher {
+            
+            do {
+                
+                let array = [UInt8](encrypted as Data)
+                let _decrypted = try _cypher.decrypt(array)
+                let data = Data(bytes: _decrypted)
+                return data
+//
+//                if let encryptedString = String(data: encrypted as Data, encoding: .ascii) {
+//
+//                    let _encrypted = Array(base64: encryptedString)
+//                    let decrypted = try _cypher.decrypt(_encrypted)
+//                    if let decryptedText = String(bytes: decrypted, encoding: .utf8), let data = NSData(base64Encoded: decryptedText, options: .ignoreUnknownCharacters) {
+//                        return data as Data
+//                    }
+//                }
             }
             catch let error {
                 print("Error encoding text: \(error)")

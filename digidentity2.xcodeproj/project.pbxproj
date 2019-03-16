@@ -100,6 +100,7 @@
 		19C1A8E4223D1D1F00C6B848 /* JSONLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONLoader.swift; sourceTree = "<group>"; };
 		19C1A8F8223D515200C6B848 /* EncryptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionTests.swift; sourceTree = "<group>"; };
 		19C1A8FE223D576C00C6B848 /* Encryption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encryption.swift; sourceTree = "<group>"; };
+		19C1A901223D67D800C6B848 /* digidentity 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "digidentity 2.xcdatamodel"; sourceTree = "<group>"; };
 		1C8EE44788ABA50F897DE242 /* Pods_digidentity2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_digidentity2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		246E02F552576F429A051837 /* Pods-digidentity2Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-digidentity2Tests.release.xcconfig"; path = "Target Support Files/Pods-digidentity2Tests/Pods-digidentity2Tests.release.xcconfig"; sourceTree = "<group>"; };
 		C840E02B99B74EC6337622DD /* Pods-digidentity2Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-digidentity2Tests.debug.xcconfig"; path = "Target Support Files/Pods-digidentity2Tests/Pods-digidentity2Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -833,9 +834,10 @@
 		19C1A7EC223A5FB700C6B848 /* digidentity2.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				19C1A901223D67D800C6B848 /* digidentity 2.xcdatamodel */,
 				19C1A7ED223A5FB700C6B848 /* digidentity2.xcdatamodel */,
 			);
-			currentVersion = 19C1A7ED223A5FB700C6B848 /* digidentity2.xcdatamodel */;
+			currentVersion = 19C1A901223D67D800C6B848 /* digidentity 2.xcdatamodel */;
 			path = digidentity2.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

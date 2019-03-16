@@ -46,7 +46,7 @@ class EncryptionTests: XCTestCase {
         let encrypted = encryption.encrypt(toBase64: plainText)
         XCTAssertNotNil(encrypted)
 
-        let decrypted = encryption.decrypt(base64Encoded: encrypted!)
+        let decrypted = encryption.decrypt(base64String: encrypted!)
         XCTAssertNotNil(decrypted)
 
         XCTAssertNotEqual(plainText, encrypted)
