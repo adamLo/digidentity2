@@ -33,7 +33,7 @@ class ItemCell: UITableViewCell {
     func setup(with item: Item) {
         
         idLabel.text = String(format: NSLocalizedString("ID: %@", comment: "Item id label format"), item.identifier ?? "N/A")
-        confidenceLabel.text = String(format: NSLocalizedString("Confidence: %f", comment: "Item confidence label format"), item.confidence)
+        confidenceLabel.text = String(format: NSLocalizedString("Confidence: %0.3f", comment: "Item confidence label format"), item.confidence)
         
         var text: String? = item.text
         if item.encrypted, let _text = item.text {
@@ -41,7 +41,7 @@ class ItemCell: UITableViewCell {
                 text = decryptedText
             }
             else {
-                text = NSLocalizedString("Unable to decrypt", comment: "PLaceholder for non-decryptable texts")
+                text = NSLocalizedString("Unable to decrypt", comment: "Placeholder for non-decryptable texts")
             }
         }
         

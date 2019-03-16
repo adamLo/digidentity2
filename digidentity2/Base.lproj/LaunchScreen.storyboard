@@ -17,7 +17,41 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Assesment task" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Atv-bL-QFk">
+                                <rect key="frame" x="112" y="255" width="151" height="24"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="for Digidentity" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ggW-7w-yhe">
+                                <rect key="frame" x="127.5" y="289" width="120.5" height="23"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(C) Adam Lovastyik, 2019" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ciU-1v-PTy">
+                                <rect key="frame" x="90" y="636.5" width="195.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="Atv-bL-QFk" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="3pg-mc-BUA"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="ciU-1v-PTy" secondAttribute="bottom" constant="10" id="G7J-XH-yUV"/>
+                            <constraint firstItem="Atv-bL-QFk" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="GRL-pH-7xD"/>
+                            <constraint firstItem="ggW-7w-yhe" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="Iga-Kb-pKf"/>
+                            <constraint firstItem="ciU-1v-PTy" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="LzY-3s-vxV"/>
+                            <constraint firstItem="ciU-1v-PTy" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="M8x-lG-OM4"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ciU-1v-PTy" secondAttribute="trailing" constant="10" id="Na8-3w-5HW"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ggW-7w-yhe" secondAttribute="trailing" constant="10" id="Vc1-5v-LYg"/>
+                            <constraint firstItem="ggW-7w-yhe" firstAttribute="top" secondItem="Atv-bL-QFk" secondAttribute="bottom" constant="10" id="Xqv-uK-8jp"/>
+                            <constraint firstItem="Atv-bL-QFk" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" multiplier="0.8" id="ZlL-dl-eSw"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Atv-bL-QFk" secondAttribute="trailing" constant="10" id="i1Y-fY-ZNo"/>
+                            <constraint firstItem="ggW-7w-yhe" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="mAq-oC-aPE"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>

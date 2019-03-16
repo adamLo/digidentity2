@@ -43,11 +43,11 @@ class Network : NSObject, URLSessionDelegate {
         
         static let domain = "API"
         
-        static let emptyData: ErrorData = (code: -1111, message: "Empty data received")
-        static let sessionNotConfigured: ErrorData = (code: -2222, message: "Session not configured")
-        static let persistenceNotConfigured: ErrorData = (code: -3333, message: "Persistence not cnofigured")
-        static let encodeError: ErrorData = (code: -4444, message: "Failed to encode data for upload")
-        static let uploadError: ErrorData = (code: -5555, message: "Failed to upload image")
+        static let emptyData: ErrorData = (code: -1111, message: NSLocalizedString("Empty data received", comment: "Error message when empty data received from the api"))
+        static let sessionNotConfigured: ErrorData = (code: -2222, message: NSLocalizedString("Session not configured", comment: "Error message when session not configured"))
+        static let persistenceNotConfigured: ErrorData = (code: -3333, message: NSLocalizedString("Persistence not cnofigured", comment: "Error message when persistencer layer not configured"))
+        static let encodeError: ErrorData = (code: -4444, message: NSLocalizedString("Failed to encode data for upload", comment: "Error message when failed to encode data for upload"))
+        static let uploadError: ErrorData = (code: -5555, message: NSLocalizedString("Failed to upload image", comment: "Error message when failed to upload data"))
     }
     
     // MARK: - Public functions
