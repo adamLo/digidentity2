@@ -19,6 +19,8 @@ class NewImageViewController: UIViewController, UIImagePickerControllerDelegate,
     
     private var hud: MBProgressHUD?
     
+    private let maxImageSize = CGSize(width: 512, height: 512)
+    
     // MARK: - Controller Lifecycle
     
     override func viewDidLoad() {
@@ -105,8 +107,14 @@ class NewImageViewController: UIViewController, UIImagePickerControllerDelegate,
         
         picker.dismiss(animated: true, completion: nil)
         
-        if let image = (info[UIImagePickerController.InfoKey.editedImage] ?? info[UIImagePickerController.InfoKey.originalImage]) as? UIImage {            
-            imageView.image = image
+        if let image = (info[UIImagePickerController.InfoKey.editedImage] ?? info[UIImagePickerController.InfoKey.originalImage]) as? UIImage {
+            
+            if image.size.width <= maxImageSize.width && image.size.height <= maxImageSize.height {
+                imageView.image = image
+            }
+            else {
+                show(message: NSLocalizedString("Image too big!\nMaximum size is \(maxImageSize.width)x\(maxImageSize.height) px", comment: "Error message when selected image is too big"))
+            }
         }
     }
     
