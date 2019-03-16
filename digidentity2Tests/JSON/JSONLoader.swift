@@ -23,4 +23,19 @@ class JSONLoader: NSObject {
         
         return nil
     }
+    
+    func parse(jsonFile: String) -> JSONArray? {
+        
+        do {
+            if let _data = load(jsonFile: jsonFile), let jsonArray = try JSONSerialization.jsonObject(with: _data, options: []) as? JSONArray {
+                
+                return jsonArray
+            }
+        }
+        catch {
+            return nil
+        }
+        
+        return nil
+    }
 }

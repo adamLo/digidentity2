@@ -59,7 +59,7 @@ class PersistenceTests: XCTestCase {
         let context = persistence.createNewManagedObjectContext()
         XCTAssertNotNil(context)
         
-        let id = "\(Date().timeIntervalSince1970)"
+        let id = UUID().uuidString
         var error: Error?
         context.performAndWait {
             do {
@@ -77,6 +77,24 @@ class PersistenceTests: XCTestCase {
         }
         
         XCTAssertNil(error, "Error saving item")
+    }
+    
+    func testJSONParsing() {
+        
+        let context = persistence.createNewManagedObjectContext()
+        XCTAssertNotNil(context)
+        
+        let item = Item.new(in: context)
+        XCTAssertNotNil(item)
+        
+        let json = JSONLoader().parse(jsonFile: "TestItems")!.first!
+        XCTAssertNotNil(json)
+        
+        item.update(with: json)
+        XCTAssertEqual(item.identifier, "aa111")
+        XCTAssertNotNil(item.imageData)
+        XCTAssertEqual(item.text, "Hello world!")
+        XCTAssertEqual(item.confidence, 0.7)
     }
 
 }
