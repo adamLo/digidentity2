@@ -16,11 +16,9 @@ class Network : NSObject, URLSessionDelegate {
     
     static let shared = Network()
     
-    private lazy var session: URLSession = {
-       
-        let session = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: nil)
-        return session
-    }()
+    var session: NetworkSessionProtocol?
+    var activityDelegate: NetworkActivityProtocol?
+    var persistence: PersistenceProtocol?
     
     struct Configuration {
         
@@ -37,16 +35,25 @@ class Network : NSObject, URLSessionDelegate {
         static let paramMaxId = "max_id"
     }
     
+    typealias ErrorData = (code: Int, message: String)
     struct Errors {
         
         static let domain = "API"
         
-        static let emptyData = -1234
+        static let emptyData: ErrorData = (code: -1111, message: "Empty data received")
+        static let sessionNotConfigured: ErrorData = (code: -2222, message: "Session not configured")
+        static let persistenceNotConfigured: ErrorData = (code: -3333, message: "Persistence not cnofigured")
     }
     
     // MARK: - Public functions
     
     func fetchItems(since startId: String? = nil, before endId: String? = nil, completion: ((_ success: Bool, _ error: Error?) -> ())?) {
+        
+        guard let _session = session else {
+            
+            completion?(false, NSError(domain: Errors.domain, code: Errors.sessionNotConfigured.code, userInfo: [NSLocalizedDescriptionKey: Errors.sessionNotConfigured.message]))
+            return
+        }
         
         var url = Configuration.baseURL.appendingPathComponent(Configuration.items)
         if let _start = startId {
@@ -59,10 +66,10 @@ class Network : NSObject, URLSessionDelegate {
         var request = URLRequest(url: url)
         request.configure(method: .get, authorization: Configuration.authorization)
         
-        let dataTask = session.dataTask(with: request) { (data, response, error) in
+        _session.startDataTask(with: request) { (data, response, error) in
             
             DispatchQueue.main.async {
-                (UIApplication.shared.delegate as! AppDelegate).showNetworkActivityIndicator()
+                self.activityDelegate?.showNetworkActivityIndicator()
             }
             
             var success = false
@@ -73,31 +80,17 @@ class Network : NSObject, URLSessionDelegate {
                 do {
                     if let jsonArray = try JSONSerialization.jsonObject(with: _data, options: []) as? JSONArray {
                         
-                        if !jsonArray.isEmpty {
-                        
-                            let context = Persistence.shared.createNewManagedObjectContext()
-                            context.performAndWait {
-                                
-                                for jsonObject in jsonArray {
-                                    
-                                    if let identifier = jsonObject[Item.JSON.id] as? String, !identifier.isEmpty {
-
-                                        var item: Item!
-                                        if let _item = Item.find(by: identifier, in: context) {
-                                            item = _item
-                                        }
-                                        else {
-                                            item = Item.new(in: context)
-                                        }
-                                        item.update(with: jsonObject)
-                                    }
-                                }
-                            }
+                        if let _persistnce = self.persistence {
                             
-                            try context.save()
+                            let (_, _, processError) = _persistnce.process(items: jsonArray)
+                            
+                            _error = processError
+                            success = processError == nil
                         }
-                        
-                        success = true
+                        else {
+                            
+                            _error = NSError(domain: Errors.domain, code: Errors.persistenceNotConfigured.code, userInfo: [NSLocalizedDescriptionKey: Errors.persistenceNotConfigured.message])
+                        }
                     }
                 }
                 catch let error2 {
@@ -105,16 +98,14 @@ class Network : NSObject, URLSessionDelegate {
                 }
             }
             else if _error == nil {
-                _error = NSError(domain: Errors.domain, code: Errors.emptyData, userInfo: [NSLocalizedDescriptionKey: "Empty data received"])
+                _error = NSError(domain: Errors.domain, code: Errors.emptyData.code, userInfo: [NSLocalizedDescriptionKey: Errors.emptyData.message])
             }
             
             DispatchQueue.main.async {
-                (UIApplication.shared.delegate as! AppDelegate).hideNetworkActivityIndicator()
+                self.activityDelegate?.hideNetworkActivityIndicator()
                 completion?(success, _error)
             }
         }
-        
-        dataTask.resume()
     }
     
     // MARK: - URLSession delegate for SSL pinning
@@ -123,7 +114,7 @@ class Network : NSObject, URLSessionDelegate {
 
         if let serverTrust = challenge.protectionSpace.serverTrust, let certificate = SecTrustGetCertificateAtIndex(serverTrust, 0) {
         
-            // FIXME: Remove this when
+            // FIXME: Remove this when remote certificate (or local?) is fixed so they match
             let credential: URLCredential =  URLCredential(trust:serverTrust)
             completionHandler(.useCredential, credential)
             return
@@ -143,9 +134,11 @@ class Network : NSObject, URLSessionDelegate {
                 if let pathToCertificate = Bundle.main.path(forResource: Configuration.certificateName, ofType: Configuration.certificateExt), let localCertificateData: NSData = NSData(contentsOfFile: pathToCertificate) {
 
                     // Compare certificates
+                    // !!!: This is where SSL pinning fails: remote certificate doesn't match local
                     if isServerTRusted && remoteCertificateData.isEqual(to: localCertificateData as Data) {
                         let credential: URLCredential =  URLCredential(trust:serverTrust)
                         completionHandler(.useCredential, credential)
+                        return
                     }
                 }
             }

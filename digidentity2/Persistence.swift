@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-class Persistence {
+class Persistence: PersistenceProtocol {
     
     static let shared = Persistence()
     
@@ -116,4 +116,42 @@ class Persistence {
         }
     }
     
+    // MARK: - PersisenceProtocol {
+    
+    func process(items: [JSONObject]) -> (inserted: Int, updated: Int, error: Error?) {
+        
+        do {
+
+            var inserted = 0
+            var updated = 0
+            
+            let context = Persistence.shared.createNewManagedObjectContext()
+            context.performAndWait {
+                
+                for jsonObject in items {
+                    
+                    if let identifier = jsonObject[Item.JSON.id] as? String, !identifier.isEmpty {
+                        
+                        var item: Item!
+                        if let _item = Item.find(by: identifier, in: context) {
+                            item = _item
+                            updated += 1
+                        }
+                        else {
+                            item = Item.new(in: context)
+                            inserted += 1
+                        }
+                        item.update(with: jsonObject)
+                    }
+                }
+            }
+            
+            try context.save()
+            return(inserted: inserted, updated: updated, error: nil)
+        }
+        catch let error {
+            
+            return (inserted: 0, updated: 0, error: error)
+        }
+    }
 }

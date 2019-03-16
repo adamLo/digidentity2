@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, NetworkActivityProtocol {
 
     var window: UIWindow?
 
@@ -18,8 +18,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        // Initialize Core Data
+        // Initialize persistence
         let _ = Persistence.shared.managedObjectContext
+        
+        // Initialize networking
+        let session = NetworkURLSession()
+        Network.shared.session = session
+        Network.shared.persistence = Persistence.shared
         
         return true
     }
