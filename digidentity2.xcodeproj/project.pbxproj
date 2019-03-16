@@ -13,7 +13,6 @@
 		19C1A7F0223A5FBB00C6B848 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19C1A7EF223A5FBB00C6B848 /* Assets.xcassets */; };
 		19C1A7F3223A5FBB00C6B848 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 19C1A7F1223A5FBB00C6B848 /* LaunchScreen.storyboard */; };
 		19C1A80C223A61A800C6B848 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A80B223A61A800C6B848 /* MainViewController.swift */; };
-		19C1A80D223A61A800C6B848 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A80B223A61A800C6B848 /* MainViewController.swift */; };
 		19C1A80F223A61F600C6B848 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A80E223A61F600C6B848 /* Persistence.swift */; };
 		19C1A810223A61F600C6B848 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A80E223A61F600C6B848 /* Persistence.swift */; };
 		19C1A813223A626500C6B848 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A812223A626500C6B848 /* Network.swift */; };
@@ -29,7 +28,6 @@
 		19C1A82C223A817400C6B848 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A82B223A817400C6B848 /* Item.swift */; };
 		19C1A82D223A817400C6B848 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A82B223A817400C6B848 /* Item.swift */; };
 		19C1A830223A936700C6B848 /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A82F223A936700C6B848 /* ItemCell.swift */; };
-		19C1A831223A936700C6B848 /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A82F223A936700C6B848 /* ItemCell.swift */; };
 		19C1A8C8223CFFCB00C6B848 /* NetworkURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A8C7223CFFCB00C6B848 /* NetworkURLSession.swift */; };
 		19C1A8C9223CFFCB00C6B848 /* NetworkURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A8C7223CFFCB00C6B848 /* NetworkURLSession.swift */; };
 		19C1A8CB223CFFFE00C6B848 /* NetworkSessionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A8CA223CFFFE00C6B848 /* NetworkSessionProtocol.swift */; };
@@ -53,7 +51,6 @@
 		19C1A8FF223D576C00C6B848 /* Encryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A8FE223D576C00C6B848 /* Encryption.swift */; };
 		19C1A900223D576C00C6B848 /* Encryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A8FE223D576C00C6B848 /* Encryption.swift */; };
 		19C1A904223D786900C6B848 /* NewImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A903223D786900C6B848 /* NewImageViewController.swift */; };
-		19C1A905223D786900C6B848 /* NewImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A903223D786900C6B848 /* NewImageViewController.swift */; };
 		19C1A907223D7EB100C6B848 /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 19C1A906223D7EB000C6B848 /* tessdata */; };
 		19C1A908223D7EB100C6B848 /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 19C1A906223D7EB000C6B848 /* tessdata */; };
 		19C1A909223D7F2C00C6B848 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19C1A7EF223A5FBB00C6B848 /* Assets.xcassets */; };
@@ -593,18 +590,15 @@
 				19C1A900223D576C00C6B848 /* Encryption.swift in Sources */,
 				19C1A8F9223D515200C6B848 /* EncryptionTests.swift in Sources */,
 				19C1A810223A61F600C6B848 /* Persistence.swift in Sources */,
-				19C1A831223A936700C6B848 /* ItemCell.swift in Sources */,
 				19C1A814223A626500C6B848 /* Network.swift in Sources */,
 				19C1A8D8223D0B0200C6B848 /* NetworkActivityProtocol.swift in Sources */,
 				19C1A8CC223CFFFE00C6B848 /* NetworkSessionProtocol.swift in Sources */,
-				19C1A905223D786900C6B848 /* NewImageViewController.swift in Sources */,
 				19C1A8E2223D1C1100C6B848 /* PersistenceTests.swift in Sources */,
 				19C1A8F3223D478000C6B848 /* Item+CoreDataClass.swift in Sources */,
 				19C1A8C9223CFFCB00C6B848 /* NetworkURLSession.swift in Sources */,
 				19C1A8F4223D478500C6B848 /* digidentity2.xcdatamodeld in Sources */,
 				19C1A822223A6D0F00C6B848 /* URLRequest.swift in Sources */,
 				19C1A90C223D7F5100C6B848 /* OCRTests.swift in Sources */,
-				19C1A80D223A61A800C6B848 /* MainViewController.swift in Sources */,
 				19C1A8D5223D06B200C6B848 /* MockNetworkURLSession.swift in Sources */,
 				19C1A8E0223D134800C6B848 /* MockPersistence.swift in Sources */,
 			);
