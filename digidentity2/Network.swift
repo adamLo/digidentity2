@@ -13,6 +13,7 @@ typealias JSONObject = [String: Any]
 typealias JSONArray = [JSONObject]
 
 typealias FetchCompletion = ((_ inserted: Int, _ updated: Int, _ error: Error?) -> ())
+typealias UploadCompletion = ((_ success: Bool, _ error: Error?) -> ())
 
 class Network : NSObject, URLSessionDelegate {
     
@@ -45,6 +46,8 @@ class Network : NSObject, URLSessionDelegate {
         static let emptyData: ErrorData = (code: -1111, message: "Empty data received")
         static let sessionNotConfigured: ErrorData = (code: -2222, message: "Session not configured")
         static let persistenceNotConfigured: ErrorData = (code: -3333, message: "Persistence not cnofigured")
+        static let encodeError: ErrorData = (code: -4444, message: "Failed to encode data for upload")
+        static let uploadError: ErrorData = (code: -5555, message: "Failed to upload image")
     }
     
     // MARK: - Public functions
@@ -52,8 +55,12 @@ class Network : NSObject, URLSessionDelegate {
     func fetchItems(since startId: String? = nil, before endId: String? = nil, completion: FetchCompletion?) {
         
         guard let _session = session else {
-            
             completion?(0, 0, NSError(domain: Errors.domain, code: Errors.sessionNotConfigured.code, userInfo: [NSLocalizedDescriptionKey: Errors.sessionNotConfigured.message]))
+            return
+        }
+        
+        guard let _persistence = persistence else {
+            completion?(0, 0, NSError(domain: Errors.domain, code: Errors.persistenceNotConfigured.code, userInfo: [NSLocalizedDescriptionKey: Errors.persistenceNotConfigured.message]))
             return
         }
         
@@ -83,18 +90,11 @@ class Network : NSObject, URLSessionDelegate {
                 do {
                     if let jsonArray = try JSONSerialization.jsonObject(with: _data, options: []) as? JSONArray {
                         
-                        if let _persistnce = self.persistence {
-                            
-                            let (processInsert, processUpdate, processError) = _persistnce.process(items: jsonArray)
-                            
-                            _error = processError
-                            inserted = processInsert
-                            updated = processUpdate
-                        }
-                        else {
-                            
-                            _error = NSError(domain: Errors.domain, code: Errors.persistenceNotConfigured.code, userInfo: [NSLocalizedDescriptionKey: Errors.persistenceNotConfigured.message])
-                        }
+                        let (processInsert, processUpdate, processError) = _persistence.process(items: jsonArray)
+                        
+                        _error = processError
+                        inserted = processInsert
+                        updated = processUpdate
                     }
                 }
                 catch let error2 {
@@ -108,6 +108,65 @@ class Network : NSObject, URLSessionDelegate {
             DispatchQueue.main.async {
                 self.activityDelegate?.hideNetworkActivityIndicator()
                 completion?(inserted, updated, _error)
+            }
+        }
+    }
+    
+    func upload(image: UIImage, text: String, confidence: Double, completion: UploadCompletion?) {
+        
+        guard let _session = session else {
+            completion?(false, NSError(domain: Errors.domain, code: Errors.sessionNotConfigured.code, userInfo: [NSLocalizedDescriptionKey: Errors.sessionNotConfigured.message]))
+            return
+        }
+        
+        guard let _persistence = persistence else {
+            completion?(false, NSError(domain: Errors.domain, code: Errors.persistenceNotConfigured.code, userInfo: [NSLocalizedDescriptionKey: Errors.persistenceNotConfigured.message]))
+            return
+        }
+        
+        guard let jsonData = Item.uploadData(image: image, text: text, confidence: confidence) else {
+            completion?(false, NSError(domain: Errors.domain, code: Errors.encodeError.code, userInfo: [NSLocalizedDescriptionKey: Errors.encodeError.message]))
+            return
+        }
+        
+        let url = Configuration.baseURL.appendingPathComponent(Configuration.item)
+        var request = URLRequest(url: url)
+        request.configure(method: .post, authorization: Configuration.authorization, data: jsonData)
+        
+        _session.startDataTask(with: request) { (data, response, error) in
+            
+            DispatchQueue.main.async {
+                self.activityDelegate?.showNetworkActivityIndicator()
+            }
+            
+            var success = false
+            var _error: Error? = error
+            
+            if let _data = data, !_data.isEmpty {
+                
+                do {
+                    if let jsonObject = try JSONSerialization.jsonObject(with: _data, options: []) as? JSONObject {
+                        
+                        let (processInsert, processUpdate, processError) = _persistence.process(items: [jsonObject])
+                        
+                        _error = processError
+                        success = processInsert > 0 || processUpdate > 0
+                    }
+                    else {
+                        _error = NSError(domain: Errors.domain, code: Errors.uploadError.code, userInfo: [NSLocalizedDescriptionKey: Errors.uploadError.message])
+                    }
+                }
+                catch let error2 {
+                    _error = error2
+                }
+            }
+            else if _error == nil {
+                _error = NSError(domain: Errors.domain, code: Errors.emptyData.code, userInfo: [NSLocalizedDescriptionKey: Errors.emptyData.message])
+            }
+            
+            DispatchQueue.main.async {
+                self.activityDelegate?.hideNetworkActivityIndicator()
+                completion?(success, _error)
             }
         }
     }

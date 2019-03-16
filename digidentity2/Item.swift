@@ -8,6 +8,8 @@
 
 import Foundation
 import CoreData
+import UIKit
+import ImageIO
 
 extension Item {
     
@@ -20,6 +22,7 @@ extension Item {
         static let text = "text"
         static let confidence = "confidence"
         static let img = "img"
+        static let image = "image"
     }
     
     class func findEntity(by idvalue: String, in context: NSManagedObjectContext) -> Any? {
@@ -72,12 +75,32 @@ extension Item {
             confidence = _confidence
         }
         
-        if let _img = json[JSON.img] as? String, !_img.isEmpty, let data = NSData(base64Encoded: _img, options: .ignoreUnknownCharacters) {
+        let img = json[JSON.img] ?? json[JSON.image]
+        if let _img = img as? String, !_img.isEmpty, let data = NSData(base64Encoded: _img, options: .ignoreUnknownCharacters) {
             imageData = data
             if encrypt && Encryption.shared.isSetup, let encryptedData = Encryption.shared.encrypt(data: data) {
                 encrypted = true
                 imageData = encryptedData as NSData
             }
         }
+    }
+    
+    static func uploadData(image: UIImage, text: String, confidence: Double) -> Data? {
+        
+        if let imageData = image.jpegData(compressionQuality: 0.7) {
+            
+            var json = JSONObject()
+            json[JSON.confidence] = confidence
+            json[JSON.text] = text
+            json[JSON.image] = imageData.base64EncodedString()
+            
+            do {
+                let jsonData = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+                return jsonData
+            }
+            catch {}
+        }
+        
+        return nil
     }
 }

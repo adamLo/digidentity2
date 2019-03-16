@@ -138,7 +138,7 @@ class NewImageViewController: UIViewController, UIImagePickerControllerDelegate,
                     _self.hud?.hide(animated: true)
                     
                     if let _text = recognizedString, !_text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty {
-                        _self.upload(image: image, text: _text)
+                        _self.upload(image: image, text: _text, confidence: 1.0)
                     }
                     else {
                         _self.show(message: NSLocalizedString("Image recognition failed", comment: "Error message when image recognition failed"))
@@ -154,10 +154,29 @@ class NewImageViewController: UIViewController, UIImagePickerControllerDelegate,
     
     // MARK: - Data integration
     
-    private func upload(image: UIImage, text: String) {
+    private func upload(image: UIImage, text: String, confidence: Double) {
         
-        // FIXME: Implement upload
-        print("Uploading image: \(image) with text: \(text)")
+        if hud == nil {
+            hud = MBProgressHUD.showAdded(to: view, animated: true)
+            hud?.mode = .indeterminate
+        }
+        hud?.label.text = NSLocalizedString("Uploading image", comment: "HUD title while uploading image")
+        
+        Network.shared.upload(image: image, text: text, confidence: confidence) {[weak self] (success, _) in
+            
+            guard let _self = self else {return}
+            
+            if success {
+                _self.hud?.label.text = NSLocalizedString("Success!", comment: "HUD title when uploaded image")
+                _self.hud?.mode = .text
+                _self.hud?.hide(animated: true, afterDelay: 0.7)
+                _self.navigationController?.popViewController(animated: true)
+            }
+            else {
+                _self.hud?.hide(animated: true)
+                _self.show(message: NSLocalizedString("Failed to upload image!", comment: "Error message when upload failed"))
+            }
+        }
     }
 
 }
