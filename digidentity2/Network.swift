@@ -12,6 +12,8 @@ import UIKit
 typealias JSONObject = [String: Any]
 typealias JSONArray = [JSONObject]
 
+typealias FetchCompletion = ((_ inserted: Int, _ updated: Int, _ error: Error?) -> ())
+
 class Network : NSObject, URLSessionDelegate {
     
     static let shared = Network()
@@ -47,11 +49,11 @@ class Network : NSObject, URLSessionDelegate {
     
     // MARK: - Public functions
     
-    func fetchItems(since startId: String? = nil, before endId: String? = nil, completion: ((_ success: Bool, _ error: Error?) -> ())?) {
+    func fetchItems(since startId: String? = nil, before endId: String? = nil, completion: FetchCompletion?) {
         
         guard let _session = session else {
             
-            completion?(false, NSError(domain: Errors.domain, code: Errors.sessionNotConfigured.code, userInfo: [NSLocalizedDescriptionKey: Errors.sessionNotConfigured.message]))
+            completion?(0, 0, NSError(domain: Errors.domain, code: Errors.sessionNotConfigured.code, userInfo: [NSLocalizedDescriptionKey: Errors.sessionNotConfigured.message]))
             return
         }
         
@@ -72,7 +74,8 @@ class Network : NSObject, URLSessionDelegate {
                 self.activityDelegate?.showNetworkActivityIndicator()
             }
             
-            var success = false
+            var inserted = 0
+            var updated = 0
             var _error: Error? = error
             
             if let _data = data, !_data.isEmpty {
@@ -82,10 +85,11 @@ class Network : NSObject, URLSessionDelegate {
                         
                         if let _persistnce = self.persistence {
                             
-                            let (_, _, processError) = _persistnce.process(items: jsonArray)
+                            let (processInsert, processUpdate, processError) = _persistnce.process(items: jsonArray)
                             
                             _error = processError
-                            success = processError == nil
+                            inserted = processInsert
+                            updated = processUpdate
                         }
                         else {
                             
@@ -103,7 +107,7 @@ class Network : NSObject, URLSessionDelegate {
             
             DispatchQueue.main.async {
                 self.activityDelegate?.hideNetworkActivityIndicator()
-                completion?(success, _error)
+                completion?(inserted, updated, _error)
             }
         }
     }

@@ -172,7 +172,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 toggleActivity(visible: true, footer: beforeId != nil)
                 isFetchingData = true
                 
-                Network.shared.fetchItems(since: sinceId, before: beforeId) {[weak self] (_, error) in
+                Network.shared.fetchItems(since: sinceId, before: beforeId) {[weak self] (_, _, error) in
                     
                     guard let _self = self else {return}
                     
@@ -220,7 +220,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             toggleActivity(visible: true, footer: false)
         }
         
-        Network.shared.fetchItems {[weak self] (_, error) in
+        Network.shared.fetchItems {[weak self] (_, _, error) in
             
             guard let _self = self else {return}
             
@@ -323,7 +323,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
             isFetchingData = true
             
-            Network.shared.fetchItems(since: sinceId) {[weak self] (_, error) in
+            Network.shared.fetchItems(since: sinceId) {[weak self] (_, _, error) in
                 
                 guard let _self = self else {return}
                 
