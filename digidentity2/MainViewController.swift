@@ -32,18 +32,14 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         toggleActivity(visible: false, footer: false)
         
         loadItems()
+        initialFetch()
         
-        isFetchingData = true
-        Network.shared.fetchItems {[weak self] (_, error) in
-            
-            guard let _self = self else {return}
-            
-            _self.isFetchingData = false
-            
-            if let _error = error {
-                _self.show(error: _error)
-            }
-        }
+        signupForBecomeActiveNotification()
+    }
+    
+    deinit {
+        
+        resignFromBecomeActiveNotification()
     }
     
     // MARK: - UI customization
@@ -207,6 +203,39 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
+    // MARK: - Backend integration
+    
+    private func initialFetch() {
+        
+        guard !isFetchingData else {return}
+        
+        isFetchingData = true
+        
+        var showHeader = false
+        if let items = itemsFetchedResultsController?.fetchedObjects, !items.isEmpty {
+            showHeader = false
+        }
+        
+        if showHeader {
+            toggleActivity(visible: true, footer: false)
+        }
+        
+        Network.shared.fetchItems {[weak self] (_, error) in
+            
+            guard let _self = self else {return}
+            
+            _self.isFetchingData = false
+            
+            if showHeader {
+                _self.toggleActivity(visible: false, footer: false)
+            }
+            
+            if let _error = error {
+                _self.show(error: _error)
+            }
+        }
+    }
+    
     // MARK: - Core Data
     
     private var itemsFetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
@@ -227,8 +256,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
         catch let error {
             
-            // FIXME: Display error
-            print("Error fetching items: \(error)")
+            show(error: error)
         }
     }
     
@@ -310,6 +338,23 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 }
             }
         }
+    }
+    
+    // MARK: - Notifications
+    
+    private func signupForBecomeActiveNotification() {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveBecomeActiveNotification(notification:)), name: UIApplication.didBecomeActiveNotification, object: nil)
+    }
+    
+    @objc func didReceiveBecomeActiveNotification(notification: Notification) {
+        
+        initialFetch()
+    }
+    
+    private func resignFromBecomeActiveNotification() {
+        
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
     }
     
 }
