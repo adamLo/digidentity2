@@ -12,6 +12,9 @@ end
 
 target 'digidentity2' do
   all_pods
+  
+  # Progress HUD
+  pod 'MBProgressHUD'
 end
 
 target 'digidentity2Tests' do
