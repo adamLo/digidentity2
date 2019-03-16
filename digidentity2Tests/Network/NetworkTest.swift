@@ -32,7 +32,7 @@ class NetworkTest: XCTestCase {
 
             XCTAssertEqual(inserted, 1)
             XCTAssertEqual(updated, 0)
-            XCTAssertNil(error)
+            XCTAssertTrue(error == nil)
         }
     }
     
@@ -47,7 +47,7 @@ class NetworkTest: XCTestCase {
 
             XCTAssertEqual(inserted, 0)
             XCTAssertEqual(updated, 1)
-            XCTAssertNil(error)
+            XCTAssertTrue(error == nil)
         }
     }
 
@@ -62,7 +62,7 @@ class NetworkTest: XCTestCase {
 
             XCTAssertEqual(inserted, 0)
             XCTAssertEqual(updated, 0)
-            XCTAssertNil(error)
+            XCTAssertTrue(error == nil)
         }
     }
 
@@ -77,8 +77,29 @@ class NetworkTest: XCTestCase {
 
             XCTAssertEqual(inserted, 0)
             XCTAssertEqual(updated, 0)
-            XCTAssertNil(error)
+            XCTAssertTrue(error == nil)
         }
     }
 
+    func testUpload() {
+        
+        let mockPersistence = MockPersistence(expectedInserts: ["bbb222"], expectedUpdates: [])
+        
+        let network = Network()
+        network.session = session
+        network.persistence = mockPersistence
+        
+        let bundle = Bundle.init(for: PersistenceTests.self)
+        let image = UIImage(named: "testimage", in: bundle, compatibleWith: nil)
+        XCTAssertNotNil(image)
+        
+        let jsonData = Item.uploadData(image: image!, text: "TEST", confidence: 9.999)
+        XCTAssertNotNil(jsonData)
+        
+        network.upload(image: image!, text: "Uploaded", confidence: 0.999) { (success, error) in
+            
+            XCTAssertTrue(error == nil)
+            XCTAssertTrue(success)
+        }
+    }
 }

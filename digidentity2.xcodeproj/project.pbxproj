@@ -55,6 +55,7 @@
 		19C1A908223D7EB100C6B848 /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 19C1A906223D7EB000C6B848 /* tessdata */; };
 		19C1A909223D7F2C00C6B848 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19C1A7EF223A5FBB00C6B848 /* Assets.xcassets */; };
 		19C1A90C223D7F5100C6B848 /* OCRTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A90B223D7F5100C6B848 /* OCRTests.swift */; };
+		19C1A910223D9D0C00C6B848 /* Upload.json in Resources */ = {isa = PBXBuildFile; fileRef = 19C1A90F223D9D0C00C6B848 /* Upload.json */; };
 		DA5C7E72D81A5129FB108CF5 /* Pods_digidentity2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C8EE44788ABA50F897DE242 /* Pods_digidentity2.framework */; };
 		E7AAD42C191C4A81026F48B0 /* Pods_digidentity2Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 097E6FA36CAC66AC03B9D859 /* Pods_digidentity2Tests.framework */; };
 /* End PBXBuildFile section */
@@ -107,6 +108,7 @@
 		19C1A903223D786900C6B848 /* NewImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewImageViewController.swift; sourceTree = "<group>"; };
 		19C1A906223D7EB000C6B848 /* tessdata */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tessdata; sourceTree = "<group>"; };
 		19C1A90B223D7F5100C6B848 /* OCRTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRTests.swift; sourceTree = "<group>"; };
+		19C1A90F223D9D0C00C6B848 /* Upload.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Upload.json; sourceTree = "<group>"; };
 		1C8EE44788ABA50F897DE242 /* Pods_digidentity2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_digidentity2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		246E02F552576F429A051837 /* Pods-digidentity2Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-digidentity2Tests.release.xcconfig"; path = "Target Support Files/Pods-digidentity2Tests/Pods-digidentity2Tests.release.xcconfig"; sourceTree = "<group>"; };
 		C840E02B99B74EC6337622DD /* Pods-digidentity2Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-digidentity2Tests.debug.xcconfig"; path = "Target Support Files/Pods-digidentity2Tests/Pods-digidentity2Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -302,6 +304,7 @@
 			children = (
 				19C1A8E4223D1D1F00C6B848 /* JSONLoader.swift */,
 				19C1A8DC223D10D800C6B848 /* TestItems.json */,
+				19C1A90F223D9D0C00C6B848 /* Upload.json */,
 			);
 			path = JSON;
 			sourceTree = "<group>";
@@ -447,6 +450,7 @@
 				19C1A8DD223D10D800C6B848 /* TestItems.json in Resources */,
 				19C1A81F223A652C00C6B848 /* certificate.crt in Resources */,
 				19C1A909223D7F2C00C6B848 /* Assets.xcassets in Resources */,
+				19C1A910223D9D0C00C6B848 /* Upload.json in Resources */,
 				19C1A908223D7EB100C6B848 /* tessdata in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

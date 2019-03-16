@@ -14,7 +14,17 @@ class MockNetworkURLSession: NetworkSessionProtocol {
     
     func startDataTask(with request: URLRequest, completionHandler: @escaping DataTaskResult) {
      
-        let data = loader.load(jsonFile: "TestItems")
+        var data: Data?
+        
+        if let url = request.url?.absoluteURL {
+        
+            if request.httpMethod == HTTPMethod.get.rawValue && url.lastPathComponent == Network.Configuration.items {
+                data = loader.load(jsonFile: "TestItems")
+            }
+            else if request.httpMethod == HTTPMethod.post.rawValue && url.lastPathComponent == Network.Configuration.item {
+                data = loader.load(jsonFile: "Upload")
+            }            
+        }
         
         completionHandler(data, nil, nil)
     }
