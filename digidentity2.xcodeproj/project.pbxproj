@@ -45,6 +45,9 @@
 		19C1A8DB223D0CA900C6B848 /* PersistenceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A8D9223D0CA900C6B848 /* PersistenceProtocol.swift */; };
 		19C1A8DD223D10D800C6B848 /* TestItems.json in Resources */ = {isa = PBXBuildFile; fileRef = 19C1A8DC223D10D800C6B848 /* TestItems.json */; };
 		19C1A8E0223D134800C6B848 /* MockPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A8DF223D134800C6B848 /* MockPersistence.swift */; };
+		19C1A8E2223D1C1100C6B848 /* PersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A8E1223D1C1100C6B848 /* PersistenceTests.swift */; };
+		19C1A8E5223D1D1F00C6B848 /* JSONLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A8E4223D1D1F00C6B848 /* JSONLoader.swift */; };
+		19C1A8E7223D1DDB00C6B848 /* JSONLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A8E4223D1D1F00C6B848 /* JSONLoader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +88,8 @@
 		19C1A8D9223D0CA900C6B848 /* PersistenceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceProtocol.swift; sourceTree = "<group>"; };
 		19C1A8DC223D10D800C6B848 /* TestItems.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = TestItems.json; sourceTree = "<group>"; };
 		19C1A8DF223D134800C6B848 /* MockPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPersistence.swift; sourceTree = "<group>"; };
+		19C1A8E1223D1C1100C6B848 /* PersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceTests.swift; sourceTree = "<group>"; };
+		19C1A8E4223D1D1F00C6B848 /* JSONLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONLoader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +144,7 @@
 		19C1A7FC223A5FBB00C6B848 /* digidentity2Tests */ = {
 			isa = PBXGroup;
 			children = (
+				19C1A8E3223D1CFF00C6B848 /* JSON */,
 				19C1A8DE223D133300C6B848 /* Persistence */,
 				19C1A7FF223A5FBB00C6B848 /* Info.plist */,
 				19C1A8D2223D067400C6B848 /* Network */,
@@ -235,9 +241,9 @@
 		19C1A8D2223D067400C6B848 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				19C1A8D0223D066400C6B848 /* NetworkTest.swift */,
+				19C1A8DF223D134800C6B848 /* MockPersistence.swift */,
 				19C1A8D3223D06B200C6B848 /* MockNetworkURLSession.swift */,
-				19C1A8DC223D10D800C6B848 /* TestItems.json */,
+				19C1A8D0223D066400C6B848 /* NetworkTest.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -245,9 +251,18 @@
 		19C1A8DE223D133300C6B848 /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
-				19C1A8DF223D134800C6B848 /* MockPersistence.swift */,
+				19C1A8E1223D1C1100C6B848 /* PersistenceTests.swift */,
 			);
 			path = Persistence;
+			sourceTree = "<group>";
+		};
+		19C1A8E3223D1CFF00C6B848 /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				19C1A8E4223D1D1F00C6B848 /* JSONLoader.swift */,
+				19C1A8DC223D10D800C6B848 /* TestItems.json */,
+			);
+			path = JSON;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -363,6 +378,7 @@
 				19C1A830223A936700C6B848 /* ItemCell.swift in Sources */,
 				19C1A80F223A61F600C6B848 /* Persistence.swift in Sources */,
 				19C1A7EE223A5FB700C6B848 /* digidentity2.xcdatamodeld in Sources */,
+				19C1A8E7223D1DDB00C6B848 /* JSONLoader.swift in Sources */,
 				19C1A7E6223A5FB700C6B848 /* AppDelegate.swift in Sources */,
 				19C1A817223A635000C6B848 /* URL.swift in Sources */,
 				19C1A8DA223D0CA900C6B848 /* PersistenceProtocol.swift in Sources */,
@@ -379,6 +395,7 @@
 			files = (
 				19C1A8D1223D066400C6B848 /* NetworkTest.swift in Sources */,
 				19C1A818223A635000C6B848 /* URL.swift in Sources */,
+				19C1A8E5223D1D1F00C6B848 /* JSONLoader.swift in Sources */,
 				19C1A8DB223D0CA900C6B848 /* PersistenceProtocol.swift in Sources */,
 				19C1A82D223A817400C6B848 /* Item.swift in Sources */,
 				19C1A810223A61F600C6B848 /* Persistence.swift in Sources */,
@@ -387,6 +404,7 @@
 				19C1A814223A626500C6B848 /* Network.swift in Sources */,
 				19C1A8D8223D0B0200C6B848 /* NetworkActivityProtocol.swift in Sources */,
 				19C1A8CC223CFFFE00C6B848 /* NetworkSessionProtocol.swift in Sources */,
+				19C1A8E2223D1C1100C6B848 /* PersistenceTests.swift in Sources */,
 				19C1A8C9223CFFCB00C6B848 /* NetworkURLSession.swift in Sources */,
 				19C1A822223A6D0F00C6B848 /* URLRequest.swift in Sources */,
 				19C1A80D223A61A800C6B848 /* MainViewController.swift in Sources */,
