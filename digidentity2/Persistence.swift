@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-class Persistence {
+class Persistence: PersistenceProtocol {
     
     static let shared = Persistence()
     
@@ -40,10 +40,13 @@ class Persistence {
         return NSManagedObjectModel(contentsOf: modelURL)!
     }()
     
-    lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator? = {
-        // The persistent store coordinator for the application. This implementation creates and return a coordinator, having added the store for the application to it. This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
-        // Create the coordinator and store
-        var coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
+    private var persistentStoreCoordinator: NSPersistentStoreCoordinator?
+    
+    func setupCoreDataPersistentStore() {
+        
+        guard persistentStoreCoordinator == nil else {abort()}
+        
+        let coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
         let url = self.applicationDocumentsDirectory.appendingPathComponent(self.databaseName + ".sqlite")
         
         #if DEBUG
@@ -59,12 +62,34 @@ class Persistence {
         } catch let error {
             // Replace this with code to handle the error appropriately.
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            NSLog("Unresolved error \(error)")
+            print("Unresolved error \(error)")
             abort()
         }
         
-        return coordinator
-    }()
+        persistentStoreCoordinator = coordinator
+    }
+
+    func setupInMemoryPersistentStore() {
+        
+        guard persistentStoreCoordinator == nil else {abort()}
+        
+        let coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
+
+        do {
+            try coordinator!.addPersistentStore(ofType: NSInMemoryStoreType, configurationName: nil, at: nil, options: [
+                NSMigratePersistentStoresAutomaticallyOption : true,
+                NSInferMappingModelAutomaticallyOption : true
+                ])
+            
+        } catch let error {
+            // Replace this with code to handle the error appropriately.
+            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+            print("Unresolved error \(error)")
+            abort()
+        }
+        
+        persistentStoreCoordinator = coordinator
+    }
     
     // MARK: - Managed object contexts
     
@@ -116,4 +141,42 @@ class Persistence {
         }
     }
     
+    // MARK: - PersisenceProtocol {
+    
+    func process(items: [JSONObject]) -> (inserted: Int, updated: Int, error: Error?) {
+        
+        do {
+
+            var inserted = 0
+            var updated = 0
+            
+            let context = Persistence.shared.createNewManagedObjectContext()
+            context.performAndWait {
+                
+                for jsonObject in items {
+                    
+                    if let identifier = jsonObject[Item.JSON.id] as? String, !identifier.isEmpty {
+                        
+                        var item: Item!
+                        if let _item = Item.find(by: identifier, in: context) {
+                            item = _item
+                            updated += 1
+                        }
+                        else {
+                            item = Item.new(in: context)
+                            inserted += 1
+                        }
+                        item.update(with: jsonObject)
+                    }
+                }
+            }
+            
+            try context.save()
+            return(inserted: inserted, updated: updated, error: nil)
+        }
+        catch let error {
+            
+            return (inserted: 0, updated: 0, error: error)
+        }
+    }
 }

@@ -22,7 +22,7 @@ extension Item {
         static let img = "img"
     }
     
-    class func find(by idvalue: String, in context: NSManagedObjectContext) -> Item? {
+    class func findEntity(by idvalue: String, in context: NSManagedObjectContext) -> Any? {
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fetchRequest.predicate = NSPredicate(format: "%K = %@", identifier, idvalue)
@@ -30,15 +30,19 @@ extension Item {
         
         do {
             
-            if let results = try context.fetch(fetchRequest) as? [Item] {
-                return results.first
-            }
+            let results = try context.fetch(fetchRequest)
+            return results.first
         }
         catch let error {
             print("Error fetching Items: \(error)")
         }
         
         return nil
+    }
+    
+    class func find(by idvalue: String, in context: NSManagedObjectContext) -> Item? {
+        
+        return findEntity(by: idvalue, in: context) as? Item
     }
     
     class func new(in context: NSManagedObjectContext) -> Item {
