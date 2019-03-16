@@ -10,7 +10,7 @@ import UIKit
 import SwiftyTesseract
 import MBProgressHUD
 
-class NewImageViewController: UIViewController {
+class NewImageViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var imageView: UIImageView!
     
@@ -64,11 +64,50 @@ class NewImageViewController: UIViewController {
     
     @IBAction func selectButtonTapped(_ sender: Any) {
         
+        if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera)) {
+            
+            let alert = UIAlertController(title: NSLocalizedString("Select source", comment: "Alert title when multiple sources present"), message: nil, preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Take a photo", comment: "Camera option title"), style: .default, handler: { (_) in
+                self.selectImage(source: .camera)
+            }))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Photo library", comment: "Photom library option title"), style: .default, handler: { (_) in
+                self.selectImage(source: .photoLibrary)
+            }))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel button title"), style: .cancel, handler: nil))
+            present(alert, animated: true, completion: nil)
+        }
+        else {
+            selectImage(source: UIImagePickerController.SourceType.photoLibrary)
+        }
     }
     
     @IBAction func uploadButtonTapped(_ sender: Any) {
         
         processImage()
+    }
+    
+    // MARK: Image Picker
+    
+    private func selectImage(source: UIImagePickerController.SourceType) {
+        
+        let picker = UIImagePickerController()
+        picker.sourceType = source
+        picker.delegate = self
+        present(picker, animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        picker.dismiss(animated: true, completion: nil)
+        
+        if let image = (info[UIImagePickerController.InfoKey.editedImage] ?? info[UIImagePickerController.InfoKey.originalImage]) as? UIImage {            
+            imageView.image = image
+        }
     }
     
     // MARK: - Image Processing
