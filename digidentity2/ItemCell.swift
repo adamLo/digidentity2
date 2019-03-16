@@ -34,21 +34,39 @@ class ItemCell: UITableViewCell {
         
         idLabel.text = String(format: NSLocalizedString("ID: %@", comment: "Item id label format"), item.identifier ?? "N/A")
         confidenceLabel.text = String(format: NSLocalizedString("Confidence: %f", comment: "Item confidence label format"), item.confidence)
-        itemTextLabel.text = String(format: NSLocalizedString("Text: %@", comment: "Item text label format"), (item.text ?? "").trimmingCharacters(in: CharacterSet.whitespacesAndNewlines))
         
-        if let _data = item.imageData {
-            
-            DispatchQueue.global(qos: .background).async {[weak itemImageView] in
-                
-                let image = UIImage(data: _data as Data)
-                
-                DispatchQueue.main.async {
-                    itemImageView?.image = image
-                }
+        var text: String? = item.text
+        if item.encrypted, let _text = item.text {
+            if let decryptedText = Encryption.shared.decrypt(base64String: _text) {
+                text = decryptedText
+            }
+            else {
+                text = NSLocalizedString("Unable to decrypt", comment: "PLaceholder for non-decryptable texts")
             }
         }
-        else {
-            itemImageView.image = nil
+        
+        itemTextLabel.text = String(format: NSLocalizedString("Text: %@", comment: "Item text label format"), (text ?? "").trimmingCharacters(in: CharacterSet.whitespacesAndNewlines))
+        
+        itemImageView.image = nil
+        if let _data = item.imageData {
+            
+            let encrypted = item.encrypted
+            DispatchQueue.global(qos: .background).async {[weak itemImageView] in
+                
+                var data: Data? = _data as Data
+                if encrypted, let decryptedData = Encryption.shared.decrypt(Data: _data) {
+                    data = decryptedData
+                }
+                
+                if let _data = data {
+                    
+                    let image = UIImage(data: _data as Data)
+                
+                    DispatchQueue.main.async {
+                        itemImageView?.image = image
+                    }
+                }
+            }
         }
     }
     

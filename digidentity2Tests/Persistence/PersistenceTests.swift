@@ -79,7 +79,7 @@ class PersistenceTests: XCTestCase {
         XCTAssertNil(error, "Error saving item")
     }
     
-    func testJSONParsing() {
+    func testJSONParsingUnencrypted() {
         
         let context = persistence.createNewManagedObjectContext()
         XCTAssertNotNil(context)
@@ -90,10 +90,43 @@ class PersistenceTests: XCTestCase {
         let json = JSONLoader().parse(jsonFile: "TestItems")!.first!
         XCTAssertNotNil(json)
         
-        item.update(with: json)
+        item.update(with: json, encrypt: false)
         XCTAssertEqual(item.identifier, "aa111")
         XCTAssertNotNil(item.imageData)
         XCTAssertEqual(item.text, "Hello world!")
+        XCTAssertEqual(item.confidence, 0.7)
+    }
+    
+    func testJSONParsingEncrypted() {
+        
+        let context = persistence.createNewManagedObjectContext()
+        XCTAssertNotNil(context)
+        
+        let item = Item.new(in: context)
+        XCTAssertNotNil(item)
+        
+        let json = JSONLoader().parse(jsonFile: "TestItems")!.first!
+        XCTAssertNotNil(json)
+        
+        item.update(with: json, encrypt: true)
+        XCTAssertTrue(item.encrypted)
+        
+        XCTAssertEqual(item.identifier, "aa111")
+        
+        XCTAssertNotNil(item.imageData)
+        let encryptedData = Encryption.shared.decrypt(Data: item.imageData!)
+        XCTAssertNotNil(encryptedData)
+        
+        let _img = json[Item.JSON.img] as? String
+        XCTAssertNotNil(_img)
+        let data = NSData(base64Encoded: _img!, options: .ignoreUnknownCharacters)
+        XCTAssertNotNil(data)
+        XCTAssertEqual(data! as Data, encryptedData)
+        
+        XCTAssertNotNil(item.text)
+        let decryptedText = Encryption.shared.decrypt(base64String: item.text!)
+        XCTAssertEqual(decryptedText, "Hello world!")
+        
         XCTAssertEqual(item.confidence, 0.7)
     }
 

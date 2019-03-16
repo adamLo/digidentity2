@@ -16,6 +16,8 @@ class Persistence: PersistenceProtocol {
     private let modelName       = "digidentity2"
     private let databaseName    = "digidentity2"
     
+    var encrypt = true
+    
     init() {
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.didReceiveContextDidSaveNotification(notification:)), name:NSNotification.Name.NSManagedObjectContextDidSave, object:nil)
@@ -166,7 +168,7 @@ class Persistence: PersistenceProtocol {
                             item = Item.new(in: context)
                             inserted += 1
                         }
-                        item.update(with: jsonObject)
+                        item.update(with: jsonObject, encrypt: encrypt)
                     }
                 }
             }
