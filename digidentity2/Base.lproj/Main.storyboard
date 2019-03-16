@@ -161,11 +161,55 @@
                         <outlet property="activityIndicator" destination="R42-XC-5xW" id="9OJ-Qr-jjg"/>
                         <outlet property="activityView" destination="fJA-EW-pf3" id="3QD-FW-pgM"/>
                         <outlet property="itemTableView" destination="AgJ-NZ-JEz" id="Fwh-5M-cDW"/>
+                        <segue destination="XZk-j8-ZDd" kind="show" identifier="newImage" id="DMG-vo-qBj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1Za-p8-18v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="229.59999999999999" y="18.440779610194905"/>
         </scene>
+        <!--New Image View Controller-->
+        <scene sceneID="VBc-Ro-fn2">
+            <objects>
+                <viewController id="XZk-j8-ZDd" customClass="NewImageViewController" customModule="digidentity2" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="7Ua-36-kXp">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="testimage" translatesAutoresizingMaskIntoConstraints="NO" id="Pnz-I1-GdR">
+                                <rect key="frame" x="0.0" y="64" width="375" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="Pnz-I1-GdR" secondAttribute="height" multiplier="15:8" id="zep-FJ-18n"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Ao-sc-VVl">
+                                <rect key="frame" x="164.5" y="296" width="46" height="30"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="startButtonTapped:" destination="XZk-j8-ZDd" eventType="touchUpInside" id="WVi-RU-GcY"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="6Ao-sc-VVl" firstAttribute="top" secondItem="Pnz-I1-GdR" secondAttribute="bottom" constant="32" id="AYa-FZ-Qby"/>
+                            <constraint firstItem="Pnz-I1-GdR" firstAttribute="leading" secondItem="Unw-eR-GnW" secondAttribute="leading" id="IEA-03-ajF"/>
+                            <constraint firstItem="Unw-eR-GnW" firstAttribute="trailing" secondItem="Pnz-I1-GdR" secondAttribute="trailing" id="kZt-t5-2mG"/>
+                            <constraint firstItem="6Ao-sc-VVl" firstAttribute="centerX" secondItem="7Ua-36-kXp" secondAttribute="centerX" id="n2z-iz-9aK"/>
+                            <constraint firstItem="Pnz-I1-GdR" firstAttribute="top" secondItem="Unw-eR-GnW" secondAttribute="top" id="q69-p0-eX4"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Unw-eR-GnW"/>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="Pnz-I1-GdR" id="zK0-es-yCv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dxR-aM-hN6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1132" y="18"/>
+        </scene>
     </scenes>
+    <resources>
+        <image name="testimage" width="600" height="90"/>
+    </resources>
 </document>

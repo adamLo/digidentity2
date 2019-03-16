@@ -21,6 +21,11 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     private var isFetchingData = false
     
+    struct Segues {
+        
+        static let newImage = "newImage"
+    }
+    
     // MARK: - Controller Lifecycle
     
     override func viewDidLoad() {
@@ -49,6 +54,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         title = NSLocalizedString("Digidentity", comment: "Main screen title")
         
         setupTableView()
+        addNewImageButton()
     }
     
     private func setupTableView() {
@@ -61,6 +67,12 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         refreshControl.tintColor = UIColor.darkGray
         refreshControl.addTarget(self, action: #selector(refreshInitiated(_:)), for: .valueChanged)
         itemTableView.refreshControl = refreshControl
+    }
+    
+    private func addNewImageButton() {
+        
+        let item = UIBarButtonItem(title: NSLocalizedString("New", comment: "New image button title"), style: .plain, target: self, action: #selector(newImageButtonTapped(_:)))
+        navigationItem.rightBarButtonItem = item
     }
     
     private func toggleActivity(visible: Bool, footer: Bool) {
@@ -106,16 +118,6 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "OK Button title"), style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
     // MARK: - TableView
     
@@ -338,6 +340,11 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 }
             }
         }
+    }
+    
+    @objc func newImageButtonTapped(_ sender: Any) {
+        
+        performSegue(withIdentifier: Segues.newImage, sender: sender)
     }
     
     // MARK: - Notifications

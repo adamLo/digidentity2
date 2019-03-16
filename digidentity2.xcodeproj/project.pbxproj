@@ -52,6 +52,12 @@
 		19C1A8F9223D515200C6B848 /* EncryptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A8F8223D515200C6B848 /* EncryptionTests.swift */; };
 		19C1A8FF223D576C00C6B848 /* Encryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A8FE223D576C00C6B848 /* Encryption.swift */; };
 		19C1A900223D576C00C6B848 /* Encryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A8FE223D576C00C6B848 /* Encryption.swift */; };
+		19C1A904223D786900C6B848 /* NewImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A903223D786900C6B848 /* NewImageViewController.swift */; };
+		19C1A905223D786900C6B848 /* NewImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A903223D786900C6B848 /* NewImageViewController.swift */; };
+		19C1A907223D7EB100C6B848 /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 19C1A906223D7EB000C6B848 /* tessdata */; };
+		19C1A908223D7EB100C6B848 /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 19C1A906223D7EB000C6B848 /* tessdata */; };
+		19C1A909223D7F2C00C6B848 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19C1A7EF223A5FBB00C6B848 /* Assets.xcassets */; };
+		19C1A90C223D7F5100C6B848 /* OCRTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C1A90B223D7F5100C6B848 /* OCRTests.swift */; };
 		DA5C7E72D81A5129FB108CF5 /* Pods_digidentity2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C8EE44788ABA50F897DE242 /* Pods_digidentity2.framework */; };
 		E7AAD42C191C4A81026F48B0 /* Pods_digidentity2Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 097E6FA36CAC66AC03B9D859 /* Pods_digidentity2Tests.framework */; };
 /* End PBXBuildFile section */
@@ -101,6 +107,9 @@
 		19C1A8F8223D515200C6B848 /* EncryptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionTests.swift; sourceTree = "<group>"; };
 		19C1A8FE223D576C00C6B848 /* Encryption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encryption.swift; sourceTree = "<group>"; };
 		19C1A901223D67D800C6B848 /* digidentity 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "digidentity 2.xcdatamodel"; sourceTree = "<group>"; };
+		19C1A903223D786900C6B848 /* NewImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewImageViewController.swift; sourceTree = "<group>"; };
+		19C1A906223D7EB000C6B848 /* tessdata */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tessdata; sourceTree = "<group>"; };
+		19C1A90B223D7F5100C6B848 /* OCRTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRTests.swift; sourceTree = "<group>"; };
 		1C8EE44788ABA50F897DE242 /* Pods_digidentity2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_digidentity2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		246E02F552576F429A051837 /* Pods-digidentity2Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-digidentity2Tests.release.xcconfig"; path = "Target Support Files/Pods-digidentity2Tests/Pods-digidentity2Tests.release.xcconfig"; sourceTree = "<group>"; };
 		C840E02B99B74EC6337622DD /* Pods-digidentity2Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-digidentity2Tests.debug.xcconfig"; path = "Target Support Files/Pods-digidentity2Tests/Pods-digidentity2Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -175,6 +184,7 @@
 		19C1A7FC223A5FBB00C6B848 /* digidentity2Tests */ = {
 			isa = PBXGroup;
 			children = (
+				19C1A90A223D7F3D00C6B848 /* OCR */,
 				19C1A8F7223D513C00C6B848 /* Encryption */,
 				19C1A8E3223D1CFF00C6B848 /* JSON */,
 				19C1A8DE223D133300C6B848 /* Persistence */,
@@ -199,6 +209,7 @@
 		19C1A809223A613200C6B848 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				19C1A902223D77F200C6B848 /* NewImage */,
 				19C1A82E223A934300C6B848 /* Main */,
 				19C1A7F1223A5FBB00C6B848 /* LaunchScreen.storyboard */,
 				19C1A7E9223A5FB700C6B848 /* Main.storyboard */,
@@ -238,6 +249,7 @@
 		19C1A81C223A64FF00C6B848 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				19C1A906223D7EB000C6B848 /* tessdata */,
 				19C1A81D223A652C00C6B848 /* certificate.crt */,
 				19C1A7EF223A5FBB00C6B848 /* Assets.xcassets */,
 			);
@@ -311,6 +323,22 @@
 				19C1A8FE223D576C00C6B848 /* Encryption.swift */,
 			);
 			name = Encryption;
+			sourceTree = "<group>";
+		};
+		19C1A902223D77F200C6B848 /* NewImage */ = {
+			isa = PBXGroup;
+			children = (
+				19C1A903223D786900C6B848 /* NewImageViewController.swift */,
+			);
+			name = NewImage;
+			sourceTree = "<group>";
+		};
+		19C1A90A223D7F3D00C6B848 /* OCR */ = {
+			isa = PBXGroup;
+			children = (
+				19C1A90B223D7F5100C6B848 /* OCRTests.swift */,
+			);
+			path = OCR;
 			sourceTree = "<group>";
 		};
 		D71EC1DAFF3C946A065AC8B2 /* Frameworks */ = {
@@ -409,6 +437,7 @@
 			files = (
 				19C1A7F3223A5FBB00C6B848 /* LaunchScreen.storyboard in Resources */,
 				19C1A81E223A652C00C6B848 /* certificate.crt in Resources */,
+				19C1A907223D7EB100C6B848 /* tessdata in Resources */,
 				19C1A7F0223A5FBB00C6B848 /* Assets.xcassets in Resources */,
 				19C1A7EB223A5FB700C6B848 /* Main.storyboard in Resources */,
 			);
@@ -420,6 +449,8 @@
 			files = (
 				19C1A8DD223D10D800C6B848 /* TestItems.json in Resources */,
 				19C1A81F223A652C00C6B848 /* certificate.crt in Resources */,
+				19C1A909223D7F2C00C6B848 /* Assets.xcassets in Resources */,
+				19C1A908223D7EB100C6B848 /* tessdata in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -480,12 +511,14 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-digidentity2/Pods-digidentity2-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyTesseract/SwiftyTesseract.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyTesseract.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -502,12 +535,14 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-digidentity2Tests/Pods-digidentity2Tests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyTesseract/SwiftyTesseract.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyTesseract.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -531,6 +566,7 @@
 				19C1A80F223A61F600C6B848 /* Persistence.swift in Sources */,
 				19C1A7EE223A5FB700C6B848 /* digidentity2.xcdatamodeld in Sources */,
 				19C1A8E7223D1DDB00C6B848 /* JSONLoader.swift in Sources */,
+				19C1A904223D786900C6B848 /* NewImageViewController.swift in Sources */,
 				19C1A7E6223A5FB700C6B848 /* AppDelegate.swift in Sources */,
 				19C1A817223A635000C6B848 /* URL.swift in Sources */,
 				19C1A8FF223D576C00C6B848 /* Encryption.swift in Sources */,
@@ -559,11 +595,13 @@
 				19C1A814223A626500C6B848 /* Network.swift in Sources */,
 				19C1A8D8223D0B0200C6B848 /* NetworkActivityProtocol.swift in Sources */,
 				19C1A8CC223CFFFE00C6B848 /* NetworkSessionProtocol.swift in Sources */,
+				19C1A905223D786900C6B848 /* NewImageViewController.swift in Sources */,
 				19C1A8E2223D1C1100C6B848 /* PersistenceTests.swift in Sources */,
 				19C1A8F3223D478000C6B848 /* Item+CoreDataClass.swift in Sources */,
 				19C1A8C9223CFFCB00C6B848 /* NetworkURLSession.swift in Sources */,
 				19C1A8F4223D478500C6B848 /* digidentity2.xcdatamodeld in Sources */,
 				19C1A822223A6D0F00C6B848 /* URLRequest.swift in Sources */,
+				19C1A90C223D7F5100C6B848 /* OCRTests.swift in Sources */,
 				19C1A80D223A61A800C6B848 /* MainViewController.swift in Sources */,
 				19C1A8D5223D06B200C6B848 /* MockNetworkURLSession.swift in Sources */,
 				19C1A8E0223D134800C6B848 /* MockPersistence.swift in Sources */,
