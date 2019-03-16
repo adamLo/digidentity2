@@ -41,5 +41,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    <key>NSCameraUsageDescription</key>
+    <string>tTake a photo to upload</string>
+    <key>Select a photo to upload</key>
+    <string>Access from $(PRODUCT_NAME) chat</string>
 </dict>
 </plist>

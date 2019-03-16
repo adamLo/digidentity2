@@ -130,4 +130,26 @@ class PersistenceTests: XCTestCase {
         XCTAssertEqual(item.confidence, 0.7)
     }
 
+    func testUploadData() {
+        
+        let bundle = Bundle.init(for: PersistenceTests.self)
+        let image = UIImage(named: "testimage", in: bundle, compatibleWith: nil)
+        XCTAssertNotNil(image)
+        
+        let jsonData = Item.uploadData(image: image!, text: "TEST", confidence: 9.999)
+        XCTAssertNotNil(jsonData)
+        
+        do {
+            let jsonObject = try JSONSerialization.jsonObject(with: jsonData!, options: []) as? JSONObject
+            XCTAssertNotNil(jsonObject)
+            
+            XCTAssertEqual(jsonObject![Item.JSON.confidence] as? Double, 9.999)
+            XCTAssertEqual(jsonObject![Item.JSON.text] as? String, "TEST")
+            XCTAssertNotNil(jsonObject![Item.JSON.image])
+        }
+        catch let error {
+            XCTAssertNotNil(error)
+        }
+        
+    }
 }

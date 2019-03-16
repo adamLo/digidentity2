@@ -161,11 +161,67 @@
                         <outlet property="activityIndicator" destination="R42-XC-5xW" id="9OJ-Qr-jjg"/>
                         <outlet property="activityView" destination="fJA-EW-pf3" id="3QD-FW-pgM"/>
                         <outlet property="itemTableView" destination="AgJ-NZ-JEz" id="Fwh-5M-cDW"/>
+                        <segue destination="XZk-j8-ZDd" kind="show" identifier="newImage" id="DMG-vo-qBj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1Za-p8-18v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="229.59999999999999" y="18.440779610194905"/>
         </scene>
+        <!--New Image View Controller-->
+        <scene sceneID="VBc-Ro-fn2">
+            <objects>
+                <viewController id="XZk-j8-ZDd" customClass="NewImageViewController" customModule="digidentity2" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="7Ua-36-kXp">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="testimage" translatesAutoresizingMaskIntoConstraints="NO" id="Pnz-I1-GdR">
+                                <rect key="frame" x="0.0" y="64" width="375" height="333.5"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Ao-sc-VVl">
+                                <rect key="frame" x="5" y="407.5" width="177.5" height="30"/>
+                                <state key="normal" title="Select"/>
+                                <connections>
+                                    <action selector="selectButtonTapped:" destination="XZk-j8-ZDd" eventType="touchUpInside" id="WVi-RU-GcY"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u2E-fm-dCc">
+                                <rect key="frame" x="192.5" y="407.5" width="177.5" height="30"/>
+                                <state key="normal" title="Upload"/>
+                                <connections>
+                                    <action selector="uploadButtonTapped:" destination="XZk-j8-ZDd" eventType="touchUpInside" id="jID-w9-sKa"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="u2E-fm-dCc" firstAttribute="centerY" secondItem="6Ao-sc-VVl" secondAttribute="centerY" id="2HI-mz-nGr"/>
+                            <constraint firstItem="6Ao-sc-VVl" firstAttribute="width" secondItem="7Ua-36-kXp" secondAttribute="width" multiplier="0.5" constant="-10" id="9uq-yB-dgv"/>
+                            <constraint firstItem="6Ao-sc-VVl" firstAttribute="top" secondItem="Pnz-I1-GdR" secondAttribute="bottom" constant="10" id="AYa-FZ-Qby"/>
+                            <constraint firstItem="u2E-fm-dCc" firstAttribute="width" secondItem="6Ao-sc-VVl" secondAttribute="width" id="BJe-mA-sP8"/>
+                            <constraint firstItem="Unw-eR-GnW" firstAttribute="trailing" secondItem="u2E-fm-dCc" secondAttribute="trailing" constant="5" id="CxE-4w-Tlc"/>
+                            <constraint firstItem="Pnz-I1-GdR" firstAttribute="leading" secondItem="Unw-eR-GnW" secondAttribute="leading" id="IEA-03-ajF"/>
+                            <constraint firstItem="Pnz-I1-GdR" firstAttribute="height" secondItem="7Ua-36-kXp" secondAttribute="height" multiplier="0.5" id="XH1-ag-xX8"/>
+                            <constraint firstItem="Unw-eR-GnW" firstAttribute="trailing" secondItem="Pnz-I1-GdR" secondAttribute="trailing" id="kZt-t5-2mG"/>
+                            <constraint firstItem="Pnz-I1-GdR" firstAttribute="top" secondItem="Unw-eR-GnW" secondAttribute="top" id="q69-p0-eX4"/>
+                            <constraint firstItem="6Ao-sc-VVl" firstAttribute="leading" secondItem="Unw-eR-GnW" secondAttribute="leading" constant="5" id="tDA-OO-nb4"/>
+                            <constraint firstItem="u2E-fm-dCc" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Ao-sc-VVl" secondAttribute="trailing" constant="8" symbolic="YES" id="wKD-gb-QGa"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Unw-eR-GnW"/>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="Pnz-I1-GdR" id="zK0-es-yCv"/>
+                        <outlet property="selectButton" destination="6Ao-sc-VVl" id="Abk-ar-WP7"/>
+                        <outlet property="uploadButton" destination="u2E-fm-dCc" id="eAD-yY-jy2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dxR-aM-hN6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1132" y="18"/>
+        </scene>
     </scenes>
+    <resources>
+        <image name="testimage" width="600" height="90"/>
+    </resources>
 </document>
