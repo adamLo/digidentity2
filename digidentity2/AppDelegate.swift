@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, NetworkActivityProtocol {
         // Override point for customization after application launch.
         
         // Initialize persistence
-        let _ = Persistence.shared.managedObjectContext
+        Persistence.shared.setupCoreDataPersistentStore()
         
         // Initialize networking
         let session = NetworkURLSession()

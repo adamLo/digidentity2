@@ -7,20 +7,76 @@
 //
 
 import XCTest
+import CoreData
+//@testable import Item
 
 class PersistenceTests: XCTestCase {
+    
+    private var persistence: Persistence!
 
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        
+        persistence = Persistence()
+        XCTAssertNotNil(persistence)
+        persistence.setupInMemoryPersistentStore()
     }
 
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-
-    func testPersistenceNotNil() {
+    
+    func testMainContextNotNil() {
         
-        XCTAssertNotNil(Persistence.shared)
+        XCTAssertNotNil(persistence)
+        
+        let context = persistence.managedObjectContext
+        XCTAssertNotNil(context)
+    }
+    
+    func testInsertItem() {
+        
+        let context = persistence.createNewManagedObjectContext()
+        XCTAssertNotNil(context)
+        
+        var error: Error?
+        context.performAndWait {
+            do {
+                
+                let item = Item.new(in: context)
+                item.identifier = UUID().uuidString
+                try context.save()
+            }
+            catch let _error {
+                error = _error
+            }
+        }
+        
+        XCTAssertNil(error, "Error saving item")
+    }
+    
+    func testFindItem() {
+        
+        let context = persistence.createNewManagedObjectContext()
+        XCTAssertNotNil(context)
+        
+        let id = "\(Date().timeIntervalSince1970)"
+        var error: Error?
+        context.performAndWait {
+            do {
+                
+                let item = Item.new(in: context)
+                item.identifier = id
+                try context.save()
+                
+                let _item = Item.findEntity(by: id, in: context)
+                XCTAssertNotNil(_item)
+            }
+            catch let _error {
+                error = _error
+            }
+        }
+        
+        XCTAssertNil(error, "Error saving item")
     }
 
 }
