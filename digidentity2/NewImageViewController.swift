@@ -13,6 +13,10 @@ import MBProgressHUD
 class NewImageViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var textView: UITextView!
+    
+    @IBOutlet weak var confidenceLabel: UILabel!
+    @IBOutlet weak var confidenceTextField: UITextField!
     
     @IBOutlet weak var selectButton: UIButton!
     @IBOutlet weak var uploadButton: UIButton!
@@ -38,12 +42,14 @@ class NewImageViewController: UIViewController, UIImagePickerControllerDelegate,
         
         setupButtons()
         setupImageView()
+        setupTextView()
+        setupConfidence()
     }
     
     private func setupButtons() {
         
         selectButton.setTitle(NSLocalizedString("Select image", comment: "Select button title on new image screen"), for: .normal)
-        uploadButton.setTitle(NSLocalizedString("Process & Upload", comment: "Upload button title on new image screen"), for: .normal)
+        uploadButton.setTitle(NSLocalizedString("Upload", comment: "Upload button title on new image screen"), for: .normal)
     }
     
     private func setupImageView() {
@@ -55,11 +61,42 @@ class NewImageViewController: UIViewController, UIImagePickerControllerDelegate,
         imageView.backgroundColor = UIColor.clear
     }
     
+    private func setupTextView() {
+        
+        textView.text = nil
+        textView.layer.borderWidth = 0.5
+        textView.layer.borderColor = UIColor.darkGray.cgColor
+        textView.clipsToBounds = true
+        textView.backgroundColor = UIColor.clear
+    }
+    
+    private func setupConfidence() {
+        
+        confidenceLabel.text = NSLocalizedString("Confidence:", comment: "Confidence static label title")
+        
+        confidenceTextField.text = nil
+        confidenceTextField.placeholder = NSLocalizedString("Enter confidence", comment: "Confidence text field placeholder")
+    }
+    
     private func show(message: String) {
         
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "OK button title"), style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
+    }
+    
+    private func finishEditing() {
+        
+        confidenceTextField.resignFirstResponder()
+        textView.resignFirstResponder()
+    }
+    
+    private func toggleUserInteraction(enabled: Bool) {
+        
+        confidenceTextField.isEnabled = enabled
+        textView.isUserInteractionEnabled = enabled
+        selectButton.isEnabled = enabled
+        uploadButton.isEnabled = enabled
     }
     
     // MARK: - Actions
@@ -85,7 +122,12 @@ class NewImageViewController: UIViewController, UIImagePickerControllerDelegate,
     
     @IBAction func uploadButtonTapped(_ sender: Any) {
         
-        processImage()
+        upload()
+    }
+    
+    @IBAction func textFieldDidEndOnExit(_ sender: UITextField) {
+        
+        sender.resignFirstResponder()
     }
     
     // MARK: Image Picker
@@ -111,6 +153,7 @@ class NewImageViewController: UIViewController, UIImagePickerControllerDelegate,
             
             if image.size.width <= maxImageSize.width && image.size.height <= maxImageSize.height {
                 imageView.image = image
+                processImage()
             }
             else {
                 show(message: NSLocalizedString("Image too big!\nMaximum size is \(maxImageSize.width)x\(maxImageSize.height) px", comment: "Error message when selected image is too big"))
@@ -122,7 +165,11 @@ class NewImageViewController: UIViewController, UIImagePickerControllerDelegate,
     
     private func processImage() {
         
+        finishEditing()
+        
         if let image = imageView.image {
+            
+            toggleUserInteraction(enabled: false)
             
             hud = MBProgressHUD.showAdded(to: view, animated: true)
             hud?.label.text = NSLocalizedString("Processing image", comment: "HUD title while processing image")
@@ -137,24 +184,39 @@ class NewImageViewController: UIViewController, UIImagePickerControllerDelegate,
                     
                     _self.hud?.hide(animated: true)
                     
+                    _self.toggleUserInteraction(enabled: true)
+                    
                     if let _text = recognizedString, !_text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty {
-                        _self.upload(image: image, text: _text, confidence: 1.0)
+                        
+                        _self.textView.text = _text
+                        _self.confidenceTextField.text = "1"
                     }
                     else {
+                        
+                        _self.textView.text = nil
+                        _self.confidenceTextField.text = nil
+                        
                         _self.show(message: NSLocalizedString("Image recognition failed", comment: "Error message when image recognition failed"))
                     }
                 }
             }
         }
-        else {
-            
-            show(message: NSLocalizedString("Please select an image!", comment: "Error message when no image selected"))
-        }
     }
     
     // MARK: - Data integration
     
-    private func upload(image: UIImage, text: String, confidence: Double) {
+    private func upload() {
+        
+        finishEditing()
+        
+        guard let __text = textView.text, !__text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty, let _image = imageView.image, let _confText = confidenceTextField.text, let _confidence = Double(_confText), _confidence > 0.0 else {
+            show(message: NSLocalizedString("Missing image, text or confidence!", comment: "Error message when not everyting set on new image upload"))
+            return
+        }
+        
+        toggleUserInteraction(enabled: false)
+        
+        let _text = __text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         
         if hud == nil {
             hud = MBProgressHUD.showAdded(to: view, animated: true)
@@ -162,9 +224,11 @@ class NewImageViewController: UIViewController, UIImagePickerControllerDelegate,
         }
         hud?.label.text = NSLocalizedString("Uploading image", comment: "HUD title while uploading image")
         
-        Network.shared.upload(image: image, text: text, confidence: confidence) {[weak self] (success, _) in
+        Network.shared.upload(image: _image, text: _text, confidence: _confidence) {[weak self] (success, _) in
             
             guard let _self = self else {return}
+            
+            _self.toggleUserInteraction(enabled: true)
             
             if success {
                 _self.hud?.label.text = NSLocalizedString("Success!", comment: "HUD title when uploaded image")

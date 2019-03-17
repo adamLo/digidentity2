@@ -15,6 +15,9 @@ target 'digidentity2' do
   
   # Progress HUD
   pod 'MBProgressHUD'
+  
+  # Keyboard
+  pod 'TPKeyboardAvoiding'
 end
 
 target 'digidentity2Tests' do
