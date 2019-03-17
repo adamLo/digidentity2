@@ -213,7 +213,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
                 let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "Delete action title")) { (_, indexPath) in
                     
-                    self.deleteItem(itemId: itemId, objectId: item.objectID)
+                    self.deleteItem(id: itemId)
                 }
             
                 return [deleteAction]
@@ -267,13 +267,13 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    private func deleteItem(itemId: String, objectId: NSManagedObjectID) {
+    private func deleteItem(id: String) {
         
         let hud = MBProgressHUD.showAdded(to: view, animated: true)
         hud.mode = .indeterminate
         hud.label.text = NSLocalizedString("Deleting item", comment: "HUD title while deleting an item")
         
-        Network.shared.delete(itemId: itemId) {[weak self] (success, error) in
+        Network.shared.delete(itemId: id) {[weak self] (success, error) in
             
             hud.hide(animated: true)
             
