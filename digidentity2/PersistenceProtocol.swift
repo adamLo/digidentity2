@@ -11,4 +11,6 @@ import Foundation
 protocol PersistenceProtocol {
     
     func process(items: [JSONObject]) -> (inserted: Int, updated: Int, error: Error?)
+    
+    func delete(itemId: String) -> (deleted: Int, error: Error?)
 }

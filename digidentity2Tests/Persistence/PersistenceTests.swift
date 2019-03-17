@@ -150,6 +150,33 @@ class PersistenceTests: XCTestCase {
         catch let error {
             XCTAssertNotNil(error)
         }
+    }
+    
+    func testDeleteItem() {
         
+        let context = persistence.createNewManagedObjectContext()
+        XCTAssertNotNil(context)
+        
+        var error: Error?
+        var deletedCount = 0
+        context.performAndWait {
+            do {
+                
+                let identifier = UUID().uuidString
+                
+                let item = Item.new(in: context)
+                item.identifier = identifier
+                try context.save()
+                
+                deletedCount = Item.delete(identifier: identifier, in: context)
+                try context.save()
+            }
+            catch let _error {
+                error = _error
+            }
+        }
+        
+        XCTAssertTrue(error == nil, "Error saving item")
+        XCTAssertEqual(deletedCount, 1)
     }
 }
