@@ -217,7 +217,7 @@ class Network : NSObject, URLSessionDelegate {
     
     func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
 
-        if let serverTrust = challenge.protectionSpace.serverTrust, let certificate = SecTrustGetCertificateAtIndex(serverTrust, 0) {
+        if let serverTrust = challenge.protectionSpace.serverTrust {
         
             // FIXME: Remove this when remote certificate (or local?) is fixed so they match
             let credential: URLCredential =  URLCredential(trust:serverTrust)
@@ -235,15 +235,21 @@ class Network : NSObject, URLSessionDelegate {
                 let isServerTRusted: Bool = (result == SecTrustResultType.unspecified || result == SecTrustResultType.proceed)
 
                 // Get Local and Remote certificate Data
-                let remoteCertificateData: NSData = SecCertificateCopyData(certificate)
-                if let pathToCertificate = Bundle.main.path(forResource: Configuration.certificateName, ofType: Configuration.certificateExt), let localCertificateData: NSData = NSData(contentsOfFile: pathToCertificate) {
-
-                    // Compare certificates
-                    // !!!: This is where SSL pinning fails: remote certificate doesn't match local
-                    if isServerTRusted && remoteCertificateData.isEqual(to: localCertificateData as Data) {
-                        let credential: URLCredential =  URLCredential(trust:serverTrust)
-                        completionHandler(.useCredential, credential)
-                        return
+                for certIndex in 0..<SecTrustGetCertificateCount(serverTrust) {
+                    
+                    if let certificate = SecTrustGetCertificateAtIndex(serverTrust, certIndex) {
+                    
+                        let remoteCertificateData: NSData = SecCertificateCopyData(certificate)
+                        if let pathToCertificate = Bundle.main.path(forResource: Configuration.certificateName, ofType: Configuration.certificateExt), let localCertificateData: NSData = NSData(contentsOfFile: pathToCertificate) {
+                            
+                            // Compare certificates
+                            // !!!: This is where SSL pinning fails: remote certificate doesn't match local
+                            if isServerTRusted && remoteCertificateData.isEqual(to: localCertificateData as Data) {
+                                let credential: URLCredential =  URLCredential(trust:serverTrust)
+                                completionHandler(.useCredential, credential)
+                                return
+                            }
+                        }
                     }
                 }
             }
