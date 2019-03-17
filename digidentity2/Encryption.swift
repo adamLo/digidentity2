@@ -98,15 +98,6 @@ class Encryption {
                 let _decrypted = try _cypher.decrypt(array)
                 let data = Data(bytes: _decrypted)
                 return data
-//
-//                if let encryptedString = String(data: encrypted as Data, encoding: .ascii) {
-//
-//                    let _encrypted = Array(base64: encryptedString)
-//                    let decrypted = try _cypher.decrypt(_encrypted)
-//                    if let decryptedText = String(bytes: decrypted, encoding: .utf8), let data = NSData(base64Encoded: decryptedText, options: .ignoreUnknownCharacters) {
-//                        return data as Data
-//                    }
-//                }
             }
             catch let error {
                 print("Error encoding text: \(error)")

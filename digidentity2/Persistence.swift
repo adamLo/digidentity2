@@ -16,6 +16,7 @@ class Persistence: PersistenceProtocol {
     private let modelName       = "digidentity2"
     private let databaseName    = "digidentity2"
     
+    /// Switch this to toggle encryption when persisting data
     var encrypt = true
     
     init() {
@@ -60,8 +61,8 @@ class Persistence: PersistenceProtocol {
                 NSMigratePersistentStoresAutomaticallyOption : true,
                 NSInferMappingModelAutomaticallyOption : true
                 ])
-            
-        } catch let error {
+        }
+        catch let error {
             // Replace this with code to handle the error appropriately.
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             print("Unresolved error \(error)")
@@ -83,7 +84,8 @@ class Persistence: PersistenceProtocol {
                 NSInferMappingModelAutomaticallyOption : true
                 ])
             
-        } catch let error {
+        }
+        catch let error {
             // Replace this with code to handle the error appropriately.
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             print("Unresolved error \(error)")
@@ -116,11 +118,6 @@ class Persistence: PersistenceProtocol {
         
         context.undoManager = nil
         context.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
-        
-        //        if let main = managedObjectContext {
-        //
-        //            context.parent = main
-        //        }
         
         context.persistentStoreCoordinator = self.persistentStoreCoordinator
         
