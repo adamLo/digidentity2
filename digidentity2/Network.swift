@@ -13,7 +13,7 @@ typealias JSONObject = [String: Any]
 typealias JSONArray = [JSONObject]
 
 typealias FetchCompletion = ((_ inserted: Int, _ updated: Int, _ error: Error?) -> ())
-typealias UploadCompletion = ((_ success: Bool, _ error: Error?) -> ())
+typealias OperationCompletion = ((_ success: Bool, _ error: Error?) -> ())
 
 class Network : NSObject, URLSessionDelegate {
     
@@ -48,6 +48,7 @@ class Network : NSObject, URLSessionDelegate {
         static let persistenceNotConfigured: ErrorData = (code: -3333, message: NSLocalizedString("Persistence not cnofigured", comment: "Error message when persistencer layer not configured"))
         static let encodeError: ErrorData = (code: -4444, message: NSLocalizedString("Failed to encode data for upload", comment: "Error message when failed to encode data for upload"))
         static let uploadError: ErrorData = (code: -5555, message: NSLocalizedString("Failed to upload image", comment: "Error message when failed to upload data"))
+        static let deleteError: ErrorData = (code: -6666, message: NSLocalizedString("Failed to delete item", comment: "Error message when failed to delete item"))
     }
     
     // MARK: - Public functions
@@ -112,7 +113,7 @@ class Network : NSObject, URLSessionDelegate {
         }
     }
     
-    func upload(image: UIImage, text: String, confidence: Double, completion: UploadCompletion?) {
+    func upload(image: UIImage, text: String, confidence: Double, completion: OperationCompletion?) {
         
         guard let _session = session else {
             completion?(false, NSError(domain: Errors.domain, code: Errors.sessionNotConfigured.code, userInfo: [NSLocalizedDescriptionKey: Errors.sessionNotConfigured.message]))
@@ -163,6 +164,47 @@ class Network : NSObject, URLSessionDelegate {
             else if _error == nil {
                 _error = NSError(domain: Errors.domain, code: Errors.emptyData.code, userInfo: [NSLocalizedDescriptionKey: Errors.emptyData.message])
             }
+            
+            DispatchQueue.main.async {
+                self.activityDelegate?.hideNetworkActivityIndicator()
+                completion?(success, _error)
+            }
+        }
+    }
+    
+    func delete(itemId: String, completion: OperationCompletion?) {
+        
+        guard let _session = session else {
+            completion?(false, NSError(domain: Errors.domain, code: Errors.sessionNotConfigured.code, userInfo: [NSLocalizedDescriptionKey: Errors.sessionNotConfigured.message]))
+            return
+        }
+        
+        guard let _persistence = persistence else {
+            completion?(false, NSError(domain: Errors.domain, code: Errors.persistenceNotConfigured.code, userInfo: [NSLocalizedDescriptionKey: Errors.persistenceNotConfigured.message]))
+            return
+        }
+        
+        let url = Configuration.baseURL.appendingPathComponent(Configuration.item).appendingPathComponent(itemId)
+        var request = URLRequest(url: url)
+        request.configure(method: .delete, authorization: Configuration.authorization)
+        
+        _session.startDataTask(with: request) { (data, response, error) in
+            
+            DispatchQueue.main.async {
+                self.activityDelegate?.showNetworkActivityIndicator()
+            }
+            
+            var success = false
+            var _error: Error? = error
+            
+            if error == nil, let _response = response as? HTTPURLResponse, _response.statusCode != 200 {
+                _error = NSError(domain: Errors.domain, code: Errors.deleteError.code, userInfo: [NSLocalizedDescriptionKey: Errors.deleteError.message])
+            }
+            
+            success = _error == nil
+            
+            // Delete regardless backend operation result as it may not be in sync with local cache (e.g. deleting an item thart has been already removed from the backend
+            let _ = _persistence.delete(itemId: itemId)
             
             DispatchQueue.main.async {
                 self.activityDelegate?.hideNetworkActivityIndicator()

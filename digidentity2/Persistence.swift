@@ -174,11 +174,33 @@ class Persistence: PersistenceProtocol {
             }
             
             try context.save()
+            
             return(inserted: inserted, updated: updated, error: nil)
         }
         catch let error {
             
             return (inserted: 0, updated: 0, error: error)
+        }
+    }
+    
+    func delete(itemId: String) -> (deleted: Int, error: Error?) {
+        
+        do {
+            
+            var deleted = 0
+            
+            let context = Persistence.shared.createNewManagedObjectContext()
+            context.performAndWait {
+                deleted = Item.delete(identifier: itemId, in: context)
+            }
+            
+            try context.save()
+            
+            return(deleted, error: nil)
+        }
+        catch let error {
+            
+            return (deleted: 0, error: error)
         }
     }
 }

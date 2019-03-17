@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import MBProgressHUD
 
 class MainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, UIScrollViewDelegate {
 
@@ -194,6 +195,34 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        
+        if !isFetchingData, let items = itemsFetchedResultsController?.fetchedObjects as? [Item], !items.isEmpty {
+            return true
+        }
+        
+        return false
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        if !isFetchingData, let items = itemsFetchedResultsController?.fetchedObjects as? [Item], !items.isEmpty {
+            
+            let item = items[indexPath.row]
+            if let itemId = item.identifier {
+        
+                let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "Delete action title")) { (_, indexPath) in
+                    
+                    self.deleteItem(itemId: itemId, objectId: item.objectID)
+                }
+            
+                return [deleteAction]
+            }
+        }
+        
+        return nil
+    }
+    
     // MARK: - ScrollView
     
     private var didUserScrollSinceFetch = false
@@ -233,6 +262,22 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
             
             if let _error = error {
+                _self.show(error: _error)
+            }
+        }
+    }
+    
+    private func deleteItem(itemId: String, objectId: NSManagedObjectID) {
+        
+        let hud = MBProgressHUD.showAdded(to: view, animated: true)
+        hud.mode = .indeterminate
+        hud.label.text = NSLocalizedString("Deleting item", comment: "HUD title while deleting an item")
+        
+        Network.shared.delete(itemId: itemId) {[weak self] (success, error) in
+            
+            hud.hide(animated: true)
+            
+            if let _error = error, let _self = self {
                 _self.show(error: _error)
             }
         }

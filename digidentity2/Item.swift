@@ -25,22 +25,27 @@ extension Item {
         static let image = "image"
     }
     
-    class func findEntity(by idvalue: String, in context: NSManagedObjectContext) -> Any? {
+    class func findEntities(by idvalue: String, in context: NSManagedObjectContext) -> [Any]? {
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fetchRequest.predicate = NSPredicate(format: "%K = %@", identifier, idvalue)
-        fetchRequest.fetchLimit = 1
         
         do {
             
             let results = try context.fetch(fetchRequest)
-            return results.first
+            return results
         }
         catch let error {
             print("Error fetching Items: \(error)")
         }
         
         return nil
+    }
+    
+    class func findEntity(by idvalue: String, in context: NSManagedObjectContext) -> Any? {
+        
+        let item = findEntities(by: idvalue, in: context)?.first
+        return item
     }
     
     class func find(by idvalue: String, in context: NSManagedObjectContext) -> Item? {
@@ -102,5 +107,24 @@ extension Item {
         }
         
         return nil
+    }
+    
+    class func delete(identifier: String, in context: NSManagedObjectContext) -> Int {
+        
+        var deleted = 0
+        
+        if let entities = findEntities(by: identifier, in: context) {
+            
+            for entity in entities {
+                
+                if let _entity = entity as? NSManagedObject {
+                    
+                    context.delete(_entity)
+                    deleted += 1
+                }
+            }
+        }
+        
+        return deleted
     }
 }
