@@ -34,6 +34,14 @@ class NewImageViewController: UIViewController, UIImagePickerControllerDelegate,
         setupUI()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        
+        super.viewWillDisappear(animated)
+        
+        finishEditing()
+        hud?.hide(animated: false)
+    }
+    
     // MARK: - UI Customization
     
     private func setupUI() {
