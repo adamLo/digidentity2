@@ -35,17 +35,34 @@ class ItemCell: UITableViewCell {
         idLabel.text = String(format: NSLocalizedString("ID: %@", comment: "Item id label format"), item.identifier ?? "N/A")
         confidenceLabel.text = String(format: NSLocalizedString("Confidence: %0.3f", comment: "Item confidence label format"), item.confidence)
         
-        var text: String? = item.text
-        if item.encrypted, let _text = item.text {
-            if let decryptedText = Encryption.shared.decrypt(base64String: _text) {
-                text = decryptedText
-            }
-            else {
-                text = NSLocalizedString("Unable to decrypt", comment: "Placeholder for non-decryptable texts")
-            }
+        let updateText: ((_ text: String?) -> ()) = {[weak self] (text) in
+        
+            self?.itemTextLabel.text = String(format: NSLocalizedString("Text: %@", comment: "Item text label format"), (text ?? "").trimmingCharacters(in: CharacterSet.whitespacesAndNewlines))
         }
         
-        itemTextLabel.text = String(format: NSLocalizedString("Text: %@", comment: "Item text label format"), (text ?? "").trimmingCharacters(in: CharacterSet.whitespacesAndNewlines))
+        if item.encrypted, let _text = item.text {
+        
+            updateText(nil)
+            
+            DispatchQueue.global(qos: .background).async {
+
+                var text: String?
+                
+                if let decryptedText = Encryption.shared.decrypt(base64String: _text) {
+                    text = decryptedText
+                }
+                else {
+                    text = NSLocalizedString("Unable to decrypt", comment: "Placeholder for non-decryptable texts")
+                }
+                
+                DispatchQueue.main.async {
+                    updateText(text)
+                }
+            }
+        }
+        else {
+            updateText(item.text)
+        }
         
         itemImageView.image = nil
         if let _data = item.imageData {
