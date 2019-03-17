@@ -23,7 +23,7 @@ class NetworkTest: XCTestCase {
 
     func testFetchItemsInsertSuccess() {
         
-        let mockPersistence = MockPersistence(expectedInserts: ["aa111"], expectedUpdates: [])
+        let mockPersistence = MockPersistence(expectedInserts: ["aa111"])
         
         let network = Network()
         network.session = session
@@ -38,7 +38,7 @@ class NetworkTest: XCTestCase {
     
     func testFetchItemsUpdateSuccess() {
 
-        let mockPersistence = MockPersistence(expectedInserts: [], expectedUpdates: ["aa111"])
+        let mockPersistence = MockPersistence(expectedUpdates: ["aa111"])
         
         let network = Network()
         network.session = session
@@ -53,7 +53,7 @@ class NetworkTest: XCTestCase {
 
     func testFetchItemsInsertFail() {
 
-        let mockPersistence = MockPersistence(expectedInserts: ["wrong_id"], expectedUpdates: [])
+        let mockPersistence = MockPersistence(expectedInserts: ["wrong_id"])
         
         let network = Network()
         network.session = session
@@ -68,7 +68,7 @@ class NetworkTest: XCTestCase {
 
     func testFetchItemsUpdateFail() {
 
-        let mockPersistence = MockPersistence(expectedInserts: [], expectedUpdates: ["wrong_id"])
+        let mockPersistence = MockPersistence(expectedUpdates: ["wrong_id"])
         
         let network = Network()
         network.session = session
@@ -83,7 +83,7 @@ class NetworkTest: XCTestCase {
 
     func testUpload() {
         
-        let mockPersistence = MockPersistence(expectedInserts: ["bbb222"], expectedUpdates: [])
+        let mockPersistence = MockPersistence(expectedInserts: ["bbb222"])
         
         let network = Network()
         network.session = session
@@ -97,6 +97,22 @@ class NetworkTest: XCTestCase {
         XCTAssertNotNil(jsonData)
         
         network.upload(image: image!, text: "Uploaded", confidence: 0.999) { (success, error) in
+            
+            XCTAssertTrue(error == nil)
+            XCTAssertTrue(success)
+        }
+    }
+    
+    func testDelete() {
+        
+        let itemId = UUID().uuidString
+        let mockPersistence = MockPersistence(expectedDeletions: [itemId])
+        
+        let network = Network()
+        network.session = session
+        network.persistence = mockPersistence
+
+        network.delete(itemId: itemId) { (success, error) in
             
             XCTAssertTrue(error == nil)
             XCTAssertTrue(success)
